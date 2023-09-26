@@ -1,4 +1,4 @@
-import type { Location, CurrentWeather, DailyWeather } from "@/entities";
+import type { Location, CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
 
 const WEATHER_URL = "https://devapi.qweather.com/v7/weather";
 const BASE_PARAMS = { key: process.env.API_KEY as string, lang: "en" };
@@ -42,9 +42,16 @@ export function getLocationByName({ location }: Params) {
   });
 }
 
-export function getDailyWeather({ location }: Params) {
+export function getDailyForecast({ location }: Params) {
   return requestData<{ daily: DailyWeather[] }>({
     path: `${WEATHER_URL}/7d`,
+    params: { location },
+  });
+}
+
+export function getHourlyForecast({ location }: Params) {
+  return requestData<{ hourly: HourlyWeather[] }>({
+    path: `${WEATHER_URL}/24h`,
     params: { location },
   });
 }

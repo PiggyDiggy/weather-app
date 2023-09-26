@@ -15,3 +15,10 @@ export type DailyWeather = {
   sunrise: string;
   sunset: string;
 };
+
+export type HourlyWeather = {
+  fxTime: string;
+  temp: string;
+  text: string;
+  cloud: string;
+}
