@@ -7,27 +7,24 @@ type Params = {
 };
 
 export default async function Page({ params: { location } }: Params) {
-  const locResponse = await getLocationByName({ location });
-  if (locResponse.code !== "200") {
+  const loc = await getLocationByName({ location }).catch(() => null);
+  if (!loc) {
     return <div>Location not found</div>;
   }
-  const locationId = locResponse.location[0].id;
+
+  const locationId = loc.id;
 
   const [currentWeather, dailyForecast, hourlyForecast] = await Promise.all([
-    getCurrentWeather({ location: locationId }),
-    getDailyForecast({ location: locationId }),
-    getHourlyForecast({ location: locationId }),
+    getCurrentWeather({ location: locationId }).catch(() => null),
+    getDailyForecast({ location: locationId }).catch(() => []),
+    getHourlyForecast({ location: locationId }).catch(() => []),
   ]);
 
-  if (currentWeather.code !== "200") {
+  if (!currentWeather) {
     return <div>Weather for current location is not available</div>;
   }
 
-  const slides = createSlides(
-    currentWeather.now,
-    hourlyForecast.code === "200" ? hourlyForecast.hourly : [],
-    dailyForecast.code === "200" ? dailyForecast.daily : []
-  );
+  const slides = createSlides(currentWeather, hourlyForecast, dailyForecast);
 
   return (
     <div>

@@ -6,19 +6,7 @@ import { CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
 
 import { WeatherSlide } from "../WeatherSlide";
 
-export type Slide =
-  | {
-      type: "current";
-      weather: CurrentWeather;
-    }
-  | {
-      type: "hour";
-      weather: HourlyWeather;
-    }
-  | {
-      type: "day";
-      weather: DailyWeather;
-    };
+export type Slide = { daily: DailyWeather, current?: CurrentWeather; hourly?: HourlyWeather[] };
 
 type Props = {
   slides: Slide[];

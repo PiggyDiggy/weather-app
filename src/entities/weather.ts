@@ -1,24 +1,25 @@
 export type CurrentWeather = {
-  temp: string;
-  feelsLike: string;
+  fxTime: Date;
+  temp: number;
+  feelsLike: number;
   text: string;
-  cloud: string;
+  cloud: number;
 };
 
 export type DailyWeather = {
-  fxDate: string;
+  fxDate: Date;
   moonPhase: string;
-  tempMax: string;
-  tempMin: string;
+  tempMax: number;
+  tempMin: number;
   textDay: string;
-  cloud: string;
+  cloud: number;
   sunrise: string;
   sunset: string;
 };
 
 export type HourlyWeather = {
-  fxTime: string;
-  temp: string;
+  fxTime: Date;
+  temp: number;
   text: string;
-  cloud: string;
-}
+  cloud: number;
+};
