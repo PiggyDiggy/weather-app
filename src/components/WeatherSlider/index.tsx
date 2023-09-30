@@ -1,31 +1,36 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 
 import { CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
 
-import { WeatherSlide } from "../WeatherSlide";
+import { CustomSlider } from "../CustomSlider";
+import { WeatherWidget } from "../WeatherWidget";
 
-export type Slide = { daily: DailyWeather, current?: CurrentWeather; hourly?: HourlyWeather[] };
+import style from "./style.module.css";
+
+export type Weather = { daily: DailyWeather; current?: CurrentWeather; hourly?: HourlyWeather[] };
 
 type Props = {
-  slides: Slide[];
+  slides: Weather[];
 };
 
 export const WeatherSlider: React.FC<Props> = ({ slides }) => {
-  const [currentSlide, setCurrentSlide] = useState(0);
-
   return (
-    <div>
-      <div>
-        <button onClick={() => setCurrentSlide(currentSlide === 0 ? slides.length - 1 : currentSlide - 1)}>-</button>
-        <button onClick={() => setCurrentSlide(currentSlide === slides.length - 1 ? 0 : currentSlide + 1)}>+</button>
-      </div>
-      <ul>
-        {slides.map((slide, i) => (
-          <WeatherSlide key={i} slide={slide} isActive={i === currentSlide} />
-        ))}
-      </ul>
-    </div>
+    <section className={style.section}>
+      <CustomSlider length={slides.length}>
+        <CustomSlider.Button type="decrement">{"<"}</CustomSlider.Button>
+        <CustomSlider.Slides>
+          {slides.map((weather, i) => (
+            <CustomSlider.Slide
+              key={i}
+              index={i}
+              renderSlide={({ isActive }) => <WeatherWidget isActive={isActive} weather={weather} />}
+            />
+          ))}
+        </CustomSlider.Slides>
+        <CustomSlider.Button type="increment">{">"}</CustomSlider.Button>
+      </CustomSlider>
+    </section>
   );
 };

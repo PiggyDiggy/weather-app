@@ -1,0 +1,21 @@
+.container {
+  display: flex;
+  align-items: center;
+}
+
+.slider {
+  width: 100%;
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+  transition: translate 0.7s ease;
+}
+
+.slide {
+  min-width: 100%;
+}

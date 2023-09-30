@@ -1,16 +1,18 @@
 import React from "react";
 
-import type { Slide } from "../WeatherSlider";
+import type { Weather } from "../WeatherSlider";
+
+import style from "./style.module.css";
 
 type Props = {
-  slide: Slide;
+  weather: Weather;
   isActive: boolean;
 };
 
-export const WeatherSlide: React.FC<Props> = ({ slide, isActive }) => {
-  const { daily, hourly, current } = slide;
+export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
+  const { daily, hourly, current } = weather;
   return (
-    <li style={isActive ? { fontWeight: "bold" } : undefined}>
+    <div className={style.widget} style={isActive ? { fontWeight: "bold" } : undefined}>
       <h2>{daily.fxDate.toLocaleString("ru-RU")}</h2>
       {current && (
         <div>
@@ -35,6 +37,6 @@ export const WeatherSlide: React.FC<Props> = ({ slide, isActive }) => {
           ))}
         </ul>
       )}
-    </li>
+    </div>
   );
 };

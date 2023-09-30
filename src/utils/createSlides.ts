@@ -1,12 +1,12 @@
 import { CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
-import type { Slide } from "@/components/WeatherSlider";
+import type { Weather } from "@/components/WeatherSlider";
 
 export const createSlides = (current: CurrentWeather, hourly: HourlyWeather[], daily: DailyWeather[]) => {
   const slides = daily.reduce((acc, weather) => {
     const date = weather.fxDate.getDate();
     acc[date] = { daily: weather };
     return acc;
-  }, {} as Record<string, Slide>);
+  }, {} as Record<string, Weather>);
 
   for (const hourlyForecast of hourly) {
     const date = hourlyForecast.fxTime.getDate();
