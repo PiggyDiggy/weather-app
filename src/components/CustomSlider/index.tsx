@@ -19,6 +19,7 @@ export const CustomSlider = ({ children, length, className }: SliderProps) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const slidesRef = useRef<HTMLUListElement>(null);
+  const prevDeltaX = useRef(0);
 
   const goToSlide = useCallback(
     (slide: number) => {
@@ -48,12 +49,18 @@ export const CustomSlider = ({ children, length, className }: SliderProps) => {
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
 
-      if (e.deltaX > 0) {
-        return goToNextSlide();
+      if (!Number.isInteger(e.deltaY)) {
+        return e.deltaY > 0 ? goToNextSlide() : goToPrevSlide();
       }
-      if (e.deltaX < 0) {
-        goToPrevSlide();
+
+      if (Math.abs(e.deltaX) > Math.abs(prevDeltaX.current)) {
+        if (e.deltaX > 0) {
+          goToNextSlide();
+        } else if (e.deltaX < 0) {
+          goToPrevSlide();
+        }
       }
+      prevDeltaX.current = e.deltaX;
     };
 
     slidesRef.current.addEventListener("wheel", handleWheel, { passive: false });
@@ -74,7 +81,7 @@ export const CustomSlider = ({ children, length, className }: SliderProps) => {
 
     setTimeout(() => {
       setIsScrolling(false);
-    }, SCROLL_TIME);
+    }, SCROLL_TIME / 2);
   }, [currentSlide]);
 
   return (
