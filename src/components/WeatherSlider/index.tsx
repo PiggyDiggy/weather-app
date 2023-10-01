@@ -19,17 +19,20 @@ export const WeatherSlider: React.FC<Props> = ({ slides }) => {
   return (
     <section className={style.section}>
       <CustomSlider length={slides.length}>
-        <CustomSlider.Button type="decrement">{"<"}</CustomSlider.Button>
-        <CustomSlider.Slides>
-          {slides.map((weather, i) => (
-            <CustomSlider.Slide
-              key={i}
-              index={i}
-              renderSlide={({ isActive }) => <WeatherWidget isActive={isActive} weather={weather} />}
-            />
-          ))}
-        </CustomSlider.Slides>
-        <CustomSlider.Button type="increment">{">"}</CustomSlider.Button>
+        <CustomSlider.SlidesWrapper>
+          <CustomSlider.Button type="decrement">{"<"}</CustomSlider.Button>
+          <CustomSlider.Slides>
+            {slides.map((weather, i) => (
+              <CustomSlider.Slide
+                key={i}
+                index={i}
+                renderSlide={({ isActive }) => <WeatherWidget isActive={isActive} weather={weather} />}
+              />
+            ))}
+          </CustomSlider.Slides>
+          <CustomSlider.Button type="increment">{">"}</CustomSlider.Button>
+        </CustomSlider.SlidesWrapper>
+        <CustomSlider.Navigation />
       </CustomSlider>
     </section>
   );

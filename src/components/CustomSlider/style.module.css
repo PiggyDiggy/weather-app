@@ -1,5 +1,6 @@
 .container {
   display: flex;
+  flex-direction: column;
   align-items: center;
 }
 
@@ -8,14 +9,41 @@
   overflow: hidden;
 }
 
+.slides-wrapper {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
 .slides {
   display: flex;
   gap: 16px;
   list-style: none;
   padding: 0;
+  margin: 0;
   transition: translate 0.7s ease;
 }
 
 .slide {
   min-width: 100%;
+}
+
+.navigation {
+  display: flex;
+  gap: 16px;
+  list-style: none;
+  padding: 0;
+}
+
+.navigation__element {
+  background-color: #eee;
+  cursor: pointer;
+  padding: 8px;
+  border-radius: 100vmax;
+  height: 16px;
+  width: 16px;
+}
+
+.navigation__element_active {
+  background-color: #ccc;
 }
