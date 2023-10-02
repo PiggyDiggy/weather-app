@@ -1,5 +1,7 @@
-import { CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
 import type { Weather } from "@/components/WeatherSlider";
+import type { HourlyWeather } from "@/entities/hourlyWeather";
+import type { DailyWeather } from "@/entities/dailyWeather";
+import type { CurrentWeather } from "@/entities/currentWeather";
 
 export const createSlides = (current: CurrentWeather, hourly: HourlyWeather[], daily: DailyWeather[]) => {
   const slides = daily.reduce((acc, weather) => {

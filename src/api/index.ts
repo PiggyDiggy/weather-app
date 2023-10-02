@@ -1,4 +1,7 @@
-import type { Location, CurrentWeather, DailyWeather, HourlyWeather } from "@/entities";
+import { RawLocation, Location, normalizeLocation } from "@/entities/location";
+import { RawCurrentWeather, CurrentWeather, normalizeCurrentWeather } from "@/entities/currentWeather";
+import { RawDailyWeather, DailyWeather, normalizeDailyWeatherArray } from "@/entities/dailyWeather";
+import { RawHourlyWeather, HourlyWeather, normalizeHourlyWeatherArray } from "@/entities/hourlyWeather";
 
 const WEATHER_URL = "https://devapi.qweather.com/v7/weather";
 const BASE_PARAMS = { key: process.env.API_KEY as string, lang: "en" };
@@ -31,7 +34,7 @@ async function requestData<T, R = Response<T>>({
 }
 
 export function getCurrentWeather({ location }: Params) {
-  return requestData<{ now: CurrentWeather }, CurrentWeather | null>({
+  return requestData<{ now: RawCurrentWeather }, CurrentWeather | null>({
     path: `${WEATHER_URL}/now`,
     params: { location },
     fetchOptions: { next: { revalidate: 10 * 60 } },
@@ -40,30 +43,26 @@ export function getCurrentWeather({ location }: Params) {
         return null;
       }
 
-      const weather = response.now;
-      weather.temp = Number(weather.temp);
-      weather.feelsLike = Number(weather.feelsLike);
-      weather.cloud = Number(weather.cloud);
-      return weather;
+      return normalizeCurrentWeather(response.now);
     },
   });
 }
 
 export function getLocationByName({ location }: Params) {
-  return requestData<{ location: Location[] }, Location | null>({
+  return requestData<{ location: RawLocation[] }, Location | null>({
     path: "https://geoapi.qweather.com/v2/city/lookup",
     params: { location },
     process(response) {
       if (response.code !== "200") {
         return null;
       }
-      return response.location[0];
+      return normalizeLocation(response.location[0]);
     },
   });
 }
 
 export function getDailyForecast({ location }: Params) {
-  return requestData<{ daily: DailyWeather[] }, DailyWeather[]>({
+  return requestData<{ daily: RawDailyWeather[] }, DailyWeather[]>({
     path: `${WEATHER_URL}/7d`,
     params: { location },
     process(response) {
@@ -71,20 +70,13 @@ export function getDailyForecast({ location }: Params) {
         return [];
       }
 
-      const { daily } = response;
-      daily.forEach((weather) => {
-        weather.fxDate = new Date(weather.fxDate);
-        weather.cloud = Number(weather.cloud);
-        weather.tempMax = Number(weather.tempMax);
-        weather.tempMin = Number(weather.tempMin);
-      });
-      return daily;
+      return normalizeDailyWeatherArray(response.daily);
     },
   });
 }
 
 export function getHourlyForecast({ location }: Params) {
-  return requestData<{ hourly: HourlyWeather[] }, HourlyWeather[]>({
+  return requestData<{ hourly: RawHourlyWeather[] }, HourlyWeather[]>({
     path: `${WEATHER_URL}/24h`,
     params: { location },
     process(response) {
@@ -92,13 +84,7 @@ export function getHourlyForecast({ location }: Params) {
         return [];
       }
 
-      const { hourly } = response;
-      hourly.forEach((weather) => {
-        weather.fxTime = new Date(weather.fxTime);
-        weather.cloud = Number(weather.cloud);
-        weather.temp = Number(weather.temp);
-      });
-      return hourly;
+      return normalizeHourlyWeatherArray(response.hourly);
     },
   });
 }
