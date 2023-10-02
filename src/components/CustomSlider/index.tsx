@@ -1,5 +1,6 @@
 import React, { useContext, useState, useCallback, useRef, useEffect } from "react";
 
+import type { Compound, FC } from "@/types";
 import { cx } from "@/utils/classname";
 
 import style from "./style.module.css";
@@ -13,15 +14,22 @@ const SliderContext = React.createContext({
 });
 const SliderRefContext = React.createContext<React.RefObject<HTMLUListElement>>({ current: null });
 
+type SliderComposition = {
+  Slides: FC;
+  Slide: FC<SlideProps>;
+  Button: FC<ButtonProps>;
+  SlidesWrapper: FC;
+  Navigation: FC;
+};
+
 type SliderProps = {
-  children: React.ReactNode;
   length: number;
   className?: string;
 };
 
 const SCROLL_TIME = 700;
 
-export const CustomSlider = ({ children, length, className }: SliderProps) => {
+export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ children, length, className }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const slidesRef = useRef<HTMLUListElement>(null);
@@ -101,11 +109,7 @@ export const CustomSlider = ({ children, length, className }: SliderProps) => {
   );
 };
 
-type SlidesProps = {
-  children: React.ReactNode;
-};
-
-CustomSlider.Slides = function Slides({ children }: SlidesProps) {
+CustomSlider.Slides = function Slides({ children }) {
   const ref = useContext(SliderRefContext);
 
   return (
@@ -122,18 +126,21 @@ type SlideProps = {
   index: number;
 };
 
-CustomSlider.Slide = function Slide({ renderSlide, index }: SlideProps) {
-  const { currentSlide } = useContext(SliderContext);
+CustomSlider.Slide = function Slide({ renderSlide, index }) {
+  const { currentSlide, goToSlide } = useContext(SliderContext);
 
-  return <li className={style.slide}>{renderSlide({ isActive: index === currentSlide })}</li>;
+  return (
+    <li onClick={() => goToSlide(index)} className={style.slide}>
+      {renderSlide({ isActive: index === currentSlide })}
+    </li>
+  );
 };
 
 type ButtonProps = {
-  children: React.ReactNode;
   type: "increment" | "decrement";
 };
 
-CustomSlider.Button = function Button({ children, type }: ButtonProps) {
+CustomSlider.Button = function Button({ children, type }) {
   const { length, currentSlide, increment, decrement } = useContext(SliderContext);
 
   if (type === "increment") {
@@ -155,7 +162,7 @@ CustomSlider.Button = function Button({ children, type }: ButtonProps) {
   );
 };
 
-CustomSlider.SlidesWrapper = function SlidesWrapper({ children }: SlidesProps) {
+CustomSlider.SlidesWrapper = function SlidesWrapper({ children }) {
   return <div className={style["slides-wrapper"]}>{children}</div>;
 };
 

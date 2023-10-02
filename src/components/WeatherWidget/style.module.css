@@ -1,4 +1,41 @@
 .widget {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  color: var(--text-main);
   min-width: 100%;
-  background-color: #eee;
+  background-color: rgba(238, 238, 238, 0.4);
+  padding: 8px 16px;
+  border-radius: 21px;
+  height: 100%;
+  box-shadow: 0px 2px 40px 2px rgba(0, 0, 0, 0.2), 0px 5px 12px rgba(0, 0, 0, 0.15),
+    inset 0px 3px 3px -2px rgba(255, 255, 255, 1);
+  transition: opacity 0.3s ease;
+}
+
+.widget:not(.widget_active) {
+  opacity: 0.4;
+  cursor: pointer;
+}
+
+.widget:not(.widget_active):hover {
+  opacity: 0.55;
+}
+
+.widget__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.date {
+  margin: 0;
+}
+
+.date__day {
+  font-size: 2.25rem;
+}
+
+.date__month {
+  font-size: 1.25rem;
 }

@@ -4,8 +4,16 @@
   box-sizing: border-box;
 }
 
+:root {
+  --text-main: #333;
+}
+
 html,
 body {
   height: 100%;
   margin: 0;
+}
+
+main {
+  height: 100%;
 }

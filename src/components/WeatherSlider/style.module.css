@@ -1,3 +1,5 @@
 .section {
-  padding: 16px;
+  padding: 48px 48px 0;
+  overflow-x: hidden;
+  background-image: linear-gradient(to bottom, #99b9c8, #3b86c1 70%);
 }
