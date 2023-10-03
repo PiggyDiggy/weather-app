@@ -29,7 +29,7 @@ export default async function Page({ params: { location } }: Params) {
     return <div>Weather for current location is not available</div>;
   }
 
-  const slides = createSlides(currentWeather, hourlyForecast, dailyForecast);
+  const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, loc.utcOffset);
 
   return (
     <div className={style.page}>
@@ -39,42 +39,51 @@ export default async function Page({ params: { location } }: Params) {
 }
 
 function Mock() {
-  const current = { fxTime: new Date("2023-09-30"), temp: 20, feelsLike: 20, text: "Sunny", cloud: 10 };
+  const current = { fxTime: new Date("2023-09-30"), temp: 20, feelsLike: 20, icon: "100", text: "Sunny", cloud: 10 };
   const daily = [
     {
       fxDate: new Date("2023-09-29"),
-      moonPhase: "grow",
+      moonPhase: "Waxing crescent",
+      moonPhaseIcon: "801",
+      iconDay: "100",
+      iconNight: "150",
       tempMax: 20,
       tempMin: 15,
       textDay: "Cloudy",
       cloud: 50,
-      sunrise: "05:30",
-      sunset: "21:20",
+      sunrise: new Date("2023-09-29T06:30"),
+      sunset: new Date("2023-09-29T21:20"),
     },
     {
       fxDate: new Date("2023-09-30"),
-      moonPhase: "grow",
+      moonPhase: "Waxing crescent",
+      moonPhaseIcon: "801",
+      iconDay: "100",
+      iconNight: "150",
       tempMax: 20,
       tempMin: 15,
       textDay: "Cloudy",
       cloud: 50,
-      sunrise: "05:30",
-      sunset: "21:20",
+      sunrise: new Date("2023-09-29T06:30"),
+      sunset: new Date("2023-09-29T21:20"),
     },
     {
       fxDate: new Date("2023-10-31"),
-      moonPhase: "grow",
+      moonPhase: "Waxing crescent",
+      moonPhaseIcon: "801",
+      iconDay: "100",
+      iconNight: "150",
       tempMax: 20,
       tempMin: 15,
       textDay: "Cloudy",
       cloud: 50,
-      sunrise: "05:30",
-      sunset: "21:20",
+      sunrise: new Date("2023-09-29T06:30"),
+      sunset: new Date("2023-09-29T21:20"),
     },
   ];
-  const hourly = [{ fxTime: new Date("2023-09-29T10:30"), temp: 20, text: "Sunny", cloud: 10 }];
+  const hourly = [{ fxTime: new Date("2023-09-29T10:30"), temp: 20, text: "Sunny", cloud: 10, icon: "100" }];
 
-  const slides = createSlides(current, hourly, daily);
+  const slides = createSlides(current, hourly, daily, 180);
   return (
     <div className={style.page}>
       <WeatherSlider slides={slides} />
