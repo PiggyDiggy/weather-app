@@ -15,7 +15,7 @@ const SliderContext = React.createContext({
 const SliderRefContext = React.createContext<React.RefObject<HTMLUListElement>>({ current: null });
 
 type SliderComposition = {
-  Slides: FC;
+  Slides: FC<SlidesProps>;
   Slide: FC<SlideProps>;
   Button: FC<ButtonProps>;
   SlidesWrapper: FC;
@@ -109,12 +109,16 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   );
 };
 
-CustomSlider.Slides = function Slides({ children }) {
+type SlidesProps = {
+  className?: string;
+};
+
+CustomSlider.Slides = function Slides({ children, className }) {
   const ref = useContext(SliderRefContext);
 
   return (
     <div className={style.slider}>
-      <ul className={style.slides} ref={ref}>
+      <ul className={cx(className, style.slides)} ref={ref}>
         {children}
       </ul>
     </div>
@@ -124,13 +128,14 @@ CustomSlider.Slides = function Slides({ children }) {
 type SlideProps = {
   renderSlide: React.FC<{ isActive: boolean }>;
   index: number;
+  classname?: string;
 };
 
-CustomSlider.Slide = function Slide({ renderSlide, index }) {
+CustomSlider.Slide = function Slide({ renderSlide, index, classname }) {
   const { currentSlide, goToSlide } = useContext(SliderContext);
 
   return (
-    <li onClick={() => goToSlide(index)} className={style.slide}>
+    <li onClick={() => goToSlide(index)} className={cx(classname, style.slide)}>
       {renderSlide({ isActive: index === currentSlide })}
     </li>
   );

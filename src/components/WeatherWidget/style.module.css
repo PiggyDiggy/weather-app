@@ -1,41 +1,94 @@
 .widget {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
-  color: var(--text-main);
   min-width: 100%;
-  background-color: rgba(238, 238, 238, 0.4);
-  padding: 8px 16px;
-  border-radius: 21px;
-  height: 100%;
-  box-shadow: 0px 2px 40px 2px rgba(0, 0, 0, 0.2), 0px 5px 12px rgba(0, 0, 0, 0.15),
-    inset 0px 3px 3px -2px rgba(255, 255, 255, 1);
-  transition: opacity 0.3s ease;
+  min-height: 170px;
+  background-color: rgba(255, 255, 255, 0.5);
+  padding: 16px 18px;
+  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.1), 0px 2px 40px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+  color: var(--text-main);
+  transition: opacity 0.25s ease-out, translate 0.25s ease-out;
 }
 
 .widget:not(.widget_active) {
   opacity: 0.4;
+  translate: 0 0 -100px;
   cursor: pointer;
 }
 
 .widget:not(.widget_active):hover {
   opacity: 0.55;
+  translate: 0 0 -80px;
 }
 
-.widget__header {
+.temp-main {
+  font-size: 64px;
+  font-weight: 300;
+  margin-block: auto;
+  margin-left: 30px;
+}
+
+.separator {
+  margin: auto 16px;
+  height: 65px;
+  width: 2px;
+  border-radius: 100vmax;
+  background-color: var(--accent-light);
+}
+
+.day-info {
+  list-style: none;
+  padding: 0;
+  margin: auto 8px;
+}
+
+.day-info__date {
   display: flex;
-  justify-content: space-between;
+  align-items: center;
+  gap: 10px;
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.day-info__forecast {
+  display: flex;
+  flex-direction: column;
+}
+
+.day-forecast__row {
+  display: flex;
+  gap: 6px;
   align-items: center;
 }
 
-.date {
-  margin: 0;
+.day-forecast__text {
+  display: inline-flex;
+  gap: 10px;
+  align-items: center;
 }
 
-.date__day {
-  font-size: 2.25rem;
+.day-forecast__icon {
+  width: 24px;
+  font-size: 24px;
 }
 
-.date__month {
-  font-size: 1.25rem;
+.day-forecast__temp {
+  font-weight: 300;
+  font-size: 18px;
+}
+
+.astronomy {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 16px;
+  margin-block: auto;
+}
+
+.astronomy_item {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: center;
 }

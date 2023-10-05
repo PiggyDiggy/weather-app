@@ -5,7 +5,8 @@
 }
 
 :root {
-  --text-main: #333;
+  --text-main: #555;
+  --accent-light: #8ccfff;
 }
 
 html,

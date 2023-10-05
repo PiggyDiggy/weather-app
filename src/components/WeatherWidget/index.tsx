@@ -2,7 +2,7 @@ import React from "react";
 
 import { cx } from "@/utils/classname";
 
-import { WidgetRow } from "../WidgetRow";
+import { Calendar, Sunrise, Sunset } from "../Icons";
 import type { Weather } from "../WeatherSlider";
 
 import style from "./style.module.css";
@@ -17,66 +17,46 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
 
   return (
     <div className={cx(style.widget, { [style.widget_active]: isActive })}>
-      <div className={style.widget__header}>
-        <h2 className={style.date}>
-          <span className={style.date__day}>{daily.fxDate.getDate()}</span> /
-          <span className={style.date__month}>{daily.fxDate.toLocaleString("en-EN", { month: "2-digit" })}</span>
-        </h2>
-        {current && (
-          <div>
-            <div>
-              <span>{current.temp}&deg; </span>
-              <span>{current.text}</span>
-            </div>
-            <div>Feels like {current.feelsLike}&deg;</div>
+      <h2 className={style["temp-main"]}>{current?.temp || daily.tempMax}&deg; </h2>
+      <div className={style.separator} />
+      <ul className={style["day-info"]}>
+        <li className={style["day-info__date"]}>
+          <Calendar />
+          {daily.fxDate.toLocaleString("en-EN", { day: "numeric", weekday: "long", month: "long" })}
+        </li>
+        <li className={style["day-info__forecast"]}>
+          <div className={style["day-forecast__row"]}>
+            <span className={style["day-forecast__text"]}>
+              <i className={cx(`qi-${daily.iconDay}`, style["day-forecast__icon"])}></i>
+              {daily.textDay}
+            </span>
+            <span className={style["day-forecast__temp"]}>{daily.tempMax}&deg;</span>
           </div>
-        )}
-      </div>
-      <WidgetRow>
-        <WidgetRow.Group>
-          <WidgetRow.GroupItem>
-            <div>Max</div>
-            <div>{daily.tempMax}&deg;</div>
-          </WidgetRow.GroupItem>
-          <WidgetRow.GroupItem>
-            <div>Min</div>
-            <div>{daily.tempMin}&deg;</div>
-          </WidgetRow.GroupItem>
-        </WidgetRow.Group>
-        <WidgetRow.Group>
-          <WidgetRow.GroupItem>
-            <div>Sunrise</div>
-            <div>{daily.sunrise}</div>
-          </WidgetRow.GroupItem>
-          <WidgetRow.GroupItem>
-            <div>Sunset</div>
-            <div>{daily.sunset}</div>
-          </WidgetRow.GroupItem>
-          <WidgetRow.GroupItem>
-            <div>Moon phase</div>
-            <div>{daily.moonPhase}</div>
-          </WidgetRow.GroupItem>
-        </WidgetRow.Group>
-        <WidgetRow.Group>
-          <WidgetRow.GroupItem>
-            <div>Cloud</div>
-            <div>{daily.cloud}</div>
-          </WidgetRow.GroupItem>
-        </WidgetRow.Group>
-        {hourly && (
-          <WidgetRow.Group>
-            <ul style={{ padding: 0, listStyle: "none" }}>
-              {hourly.map((weather) => (
-                <li key={weather.fxTime.getHours()}>
-                  <div>{weather.fxTime.toLocaleString("ru-RU")}</div>
-                  <div>Temp – {weather.temp}</div>
-                  <div>{weather.text}</div>
-                </li>
-              ))}
-            </ul>
-          </WidgetRow.Group>
-        )}
-      </WidgetRow>
+          <div className={style["day-forecast__row"]}>
+            <span className={style["day-forecast__text"]}>
+              <i className={cx(`qi-${daily.iconNight}`, style["day-forecast__icon"])}></i>
+              {daily.textNight}
+              {!daily.textNight.toLowerCase().includes("night") && " at night"}
+            </span>
+            <span className={style["day-forecast__temp"]}>{daily.tempMin}&deg;</span>
+          </div>
+        </li>
+      </ul>
+      <div className={style.separator} />
+      <ul className={style.astronomy}>
+        <li className={style.astronomy_item}>
+          <Sunrise height={20} />
+          {daily.sunrise
+            ? daily.sunrise.toLocaleString("en-EN", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
+            : "No sunrise info"}
+        </li>
+        <li className={style.astronomy_item}>
+          <Sunset height={20} />
+          {daily.sunset
+            ? daily.sunset.toLocaleString("en-EN", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
+            : "No sunset info"}
+        </li>
+      </ul>
     </div>
   );
 };

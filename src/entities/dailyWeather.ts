@@ -9,6 +9,7 @@ export type DailyWeather = {
   textDay: string;
   iconDay: string;
   iconNight: string;
+  textNight: string;
   cloud: number;
   sunrise: Date | null;
   sunset: Date | null;
@@ -24,6 +25,7 @@ const normalizeDailyWeather = ({
   tempMin,
   iconDay,
   iconNight,
+  textNight,
   cloud,
   sunrise,
   sunset,
@@ -37,6 +39,7 @@ const normalizeDailyWeather = ({
   moonPhaseIcon,
   iconDay,
   iconNight,
+  textNight,
   sunrise: sunrise ? new Date(`${fxDate}T${sunrise}+00:00`) : null,
   sunset: sunset ? new Date(`${fxDate}T${sunset}+00:00`) : null,
   textDay,
