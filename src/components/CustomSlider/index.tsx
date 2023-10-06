@@ -1,7 +1,7 @@
 import React, { useContext, useState, useCallback, useRef, useEffect } from "react";
 
 import type { Compound, FC } from "@/types";
-import { cx } from "@/utils/classname";
+import { cx } from "@/utils";
 
 import style from "./style.module.css";
 

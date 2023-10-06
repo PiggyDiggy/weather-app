@@ -1,8 +1,9 @@
 import React from "react";
 
-import { cx } from "@/utils/classname";
+import { cx, formatTemperature } from "@/utils";
 
 import { Calendar, Sunrise, Sunset } from "../Icons";
+import { HourlyForecast } from "../HourlyForecast";
 import type { Weather } from "../WeatherSlider";
 
 import style from "./style.module.css";
@@ -30,7 +31,7 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
               <i className={cx(`qi-${daily.iconDay}`, style["day-forecast__icon"])}></i>
               {daily.textDay}
             </span>
-            <span className={style["day-forecast__temp"]}>{daily.tempMax}&deg;</span>
+            <span className={style["day-forecast__temp"]}>{formatTemperature(daily.tempMax)}</span>
           </div>
           <div className={style["day-forecast__row"]}>
             <span className={style["day-forecast__text"]}>
@@ -38,7 +39,7 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
               {daily.textNight}
               {!daily.textNight.toLowerCase().includes("night") && " at night"}
             </span>
-            <span className={style["day-forecast__temp"]}>{daily.tempMin}&deg;</span>
+            <span className={style["day-forecast__temp"]}>{formatTemperature(daily.tempMin)}</span>
           </div>
         </li>
       </ul>
@@ -57,6 +58,12 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
             : "No sunset info"}
         </li>
       </ul>
+      {hourly && (
+        <>
+          <div className={style.separator} />
+          <HourlyForecast forecast={hourly} />
+        </>
+      )}
     </div>
   );
 };
