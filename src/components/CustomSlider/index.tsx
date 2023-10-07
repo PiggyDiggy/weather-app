@@ -93,9 +93,13 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
     const deltaX = slide.getBoundingClientRect().left - parent.getBoundingClientRect().left;
     parent.style.translate = `${-deltaX}px`;
 
-    setTimeout(() => {
+    const timeoutId = setTimeout(() => {
       setIsScrolling(false);
     }, SCROLL_TIME / 2);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
   }, [currentSlide]);
 
   return (
