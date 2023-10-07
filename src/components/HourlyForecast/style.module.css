@@ -1,11 +1,31 @@
 .hourly-forecast {
+  overflow-x: hidden;
+  margin-inline: -16px;
+  position: relative;
+}
+
+.hourly-forecast__list {
   list-style: none;
   padding: 0;
   display: flex;
   gap: 8px;
-  overflow: hidden;
-  /* mask-image: linear-gradient(to right, white 85%, transparent);
-  -webkit-mask-image: linear-gradient(to right, white 85%, transparent); */
+  overflow-x: hidden;
+  margin-inline: 16px;
+}
+
+.hourly-forecast_scrollable {
+  mask-image: linear-gradient(to right, white 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, white 90%, transparent);
+}
+
+.hourly-forecast_scrolled {
+  mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
+  -webkit-mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
+}
+
+.hourly-forecast_scrolled:not(.hourly-forecast_scrollable) {
+  mask-image: linear-gradient(to right, transparent, white 10%);
+  -webkit-mask-image: linear-gradient(to right, transparent, white 10%);
 }
 
 .hourly-forecast__item {
@@ -22,4 +42,30 @@
 
 .forecast__temp {
   font-weight: 600;
+}
+
+.hourly-forecast__button {
+  border: none;
+  border-radius: 100vmax;
+  padding: 4px;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  margin-block: auto;
+  top: 0;
+  bottom: 0;
+  color: inherit;
+  background-color: rgba(255, 255, 255, 0.7);
+  cursor: pointer;
+  box-shadow: 0 0 7px rgba(0, 0, 0, 0.1);
+  z-index: 10;
+}
+
+.hourly-forecast__button_prev {
+  left: 16px;
+  rotate: 0.5turn;
+}
+
+.hourly-forecast__button_next {
+  right: 16px;
 }
