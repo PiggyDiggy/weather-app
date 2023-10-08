@@ -57,6 +57,16 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
     goToSlide(currentSlide + 1);
   }, [currentSlide, length, goToSlide]);
 
+  const scrollToCurrentSlide = useCallback(() => {
+    if (!slidesRef.current) return;
+
+    const parent = slidesRef.current;
+    const slide = parent.children[currentSlide];
+
+    const deltaX = slide.getBoundingClientRect().left - parent.getBoundingClientRect().left;
+    parent.style.translate = `${-deltaX}px`;
+  }, [currentSlide]);
+
   useEffect(() => {
     if (!slidesRef.current) return;
 
@@ -85,14 +95,6 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   }, [goToNextSlide, goToPrevSlide]);
 
   useEffect(() => {
-    if (!slidesRef.current) return;
-
-    const parent = slidesRef.current;
-    const slide = parent.children[currentSlide];
-
-    const deltaX = slide.getBoundingClientRect().left - parent.getBoundingClientRect().left;
-    parent.style.translate = `${-deltaX}px`;
-
     const timeoutId = setTimeout(() => {
       setIsScrolling(false);
     }, SCROLL_TIME / 2);
@@ -101,6 +103,19 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
       clearTimeout(timeoutId);
     };
   }, [currentSlide]);
+
+  useEffect(() => {
+    if (!slidesRef.current) return;
+
+    const observer = new ResizeObserver(() => {
+      scrollToCurrentSlide();
+    });
+    observer.observe(slidesRef.current);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [scrollToCurrentSlide]);
 
   return (
     <SliderContext.Provider
