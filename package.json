@@ -18,6 +18,10 @@
     "qweather-icons": "^1.5.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",
+    "react-transition-group": "^4.4.5",
     "typescript": "5.2.2"
+  },
+  "devDependencies": {
+    "@types/react-transition-group": "^4.4.7"
   }
 }

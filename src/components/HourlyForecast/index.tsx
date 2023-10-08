@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
+import { CSSTransition } from "react-transition-group";
 
 import { cx, formatTemperature, getFormattedTime } from "@/utils";
 import type { HourlyWeather } from "@/entities/hourlyWeather";
@@ -19,7 +20,10 @@ const SCROLL_PRESERVED_DISTANCE = 100;
 export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showScrollButton, setShowScrollButton] = useState(false);
+
   const listRef = useRef<HTMLUListElement>(null);
+  const backButtonRef = useRef<HTMLButtonElement>(null);
+  const forthButtonRef = useRef<HTMLButtonElement>(null);
 
   const scrollForth = () => {
     const list = listRef.current;
@@ -48,16 +52,31 @@ export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
     setShowScrollButton(scrollLeft < list.scrollWidth - list.offsetWidth);
   }, [scrollLeft]);
 
+  const transitionClassNames = {
+    enter: style["scroll-button-enter"],
+    enterActive: style["scroll-button-entering"],
+    exit: style["scroll-button-exit"],
+    exitActive: style["scroll-button-exiting"],
+  };
+
   return (
     <div className={style["hourly-forecast"]}>
-      {scrollLeft > 0 && (
+      <CSSTransition
+        classNames={transitionClassNames}
+        nodeRef={backButtonRef}
+        timeout={200}
+        in={scrollLeft > 0}
+        mountOnEnter
+        unmountOnExit
+      >
         <button
+          ref={backButtonRef}
           onClick={scrollBack}
           className={cx(style["hourly-forecast__button"], style["hourly-forecast__button_prev"])}
         >
           <Arrow />
         </button>
-      )}
+      </CSSTransition>
       <ul
         ref={listRef}
         className={cx(style["hourly-forecast__list"], {
@@ -73,14 +92,22 @@ export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
           </li>
         ))}
       </ul>
-      {showScrollButton && (
+      <CSSTransition
+        classNames={transitionClassNames}
+        in={showScrollButton}
+        timeout={200}
+        nodeRef={forthButtonRef}
+        mountOnEnter
+        unmountOnExit
+      >
         <button
+          ref={forthButtonRef}
           onClick={scrollForth}
           className={cx(style["hourly-forecast__button"], style["hourly-forecast__button_next"])}
         >
           <Arrow />
         </button>
-      )}
+      </CSSTransition>
     </div>
   );
 };
