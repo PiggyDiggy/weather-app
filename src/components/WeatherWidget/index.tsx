@@ -1,6 +1,6 @@
 import React from "react";
 
-import { cx, formatTemperature } from "@/utils";
+import { cx, formatTemperature, getFormattedTime } from "@/utils";
 
 import { Calendar, Sunrise, Sunset } from "../Icons";
 import { HourlyForecast } from "../HourlyForecast";
@@ -47,21 +47,17 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
       <ul className={style.astronomy}>
         <li className={style.astronomy_item}>
           <Sunrise height={20} />
-          {daily.sunrise
-            ? daily.sunrise.toLocaleString("en-EN", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
-            : "No sunrise info"}
+          {daily.sunrise ? getFormattedTime(daily.sunrise) : "No sunrise info"}
         </li>
         <li className={style.astronomy_item}>
           <Sunset height={20} />
-          {daily.sunset
-            ? daily.sunset.toLocaleString("en-EN", { hour: "2-digit", minute: "2-digit", timeZone: "UTC" })
-            : "No sunset info"}
+          {daily.sunset ? getFormattedTime(daily.sunset) : "No sunset info"}
         </li>
       </ul>
       {hourly && (
         <>
           <div className={style.separator} />
-          <HourlyForecast forecast={hourly} />
+          <HourlyForecast isActiveSlide={isActive} forecast={hourly} />
         </>
       )}
     </div>

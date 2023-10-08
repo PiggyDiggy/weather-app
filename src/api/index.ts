@@ -65,6 +65,7 @@ export function getDailyForecast({ location }: Params) {
   return requestData<{ daily: RawDailyWeather[] }, DailyWeather[]>({
     path: `${WEATHER_URL}/7d`,
     params: { location },
+    fetchOptions: { next: { revalidate: 1 * 3600 } },
     process(response) {
       if (response.code !== "200") {
         return [];
@@ -79,6 +80,7 @@ export function getHourlyForecast({ location }: Params) {
   return requestData<{ hourly: RawHourlyWeather[] }, HourlyWeather[]>({
     path: `${WEATHER_URL}/24h`,
     params: { location },
+    fetchOptions: { next: { revalidate: 1 * 3600 } },
     process(response) {
       if (response.code !== "200") {
         return [];

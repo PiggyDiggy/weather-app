@@ -7,8 +7,9 @@
 
 .weather-slider__slides {
   gap: 0;
+  overscroll-behavior-x: none;
 }
 
 .weather-slider__slide {
-  perspective: 1000px;
+  perspective: 100vw;
 }

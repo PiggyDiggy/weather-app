@@ -12,12 +12,13 @@ import style from "./style.module.css";
 
 type Props = {
   forecast: HourlyWeather[];
+  isActiveSlide: boolean;
 };
 
 const SCROLL_MIN = 40;
 const SCROLL_PRESERVED_DISTANCE = 100;
 
-export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
+export const HourlyForecast: React.FC<Props> = ({ forecast, isActiveSlide }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -65,7 +66,7 @@ export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
         classNames={transitionClassNames}
         nodeRef={backButtonRef}
         timeout={200}
-        in={scrollLeft > 0}
+        in={isActiveSlide && scrollLeft > 0}
         mountOnEnter
         unmountOnExit
       >
@@ -94,7 +95,7 @@ export const HourlyForecast: React.FC<Props> = ({ forecast }) => {
       </ul>
       <CSSTransition
         classNames={transitionClassNames}
-        in={showScrollButton}
+        in={isActiveSlide && showScrollButton}
         timeout={200}
         nodeRef={forthButtonRef}
         mountOnEnter
