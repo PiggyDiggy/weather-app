@@ -2,7 +2,9 @@
   min-height: 275px;
   background-image: linear-gradient(180deg, #badcdd 0%, #29b2ff 100%);
   overflow-x: hidden;
-  padding: 52px 64px;
+  padding-inline: 64px;
+  display: flex;
+  align-items: center;
 }
 
 .weather-slider__slides {
@@ -12,4 +14,5 @@
 
 .weather-slider__slide {
   perspective: 100vw;
+  max-width: 1200px;
 }

@@ -58,14 +58,23 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   }, [currentSlide, length, goToSlide]);
 
   const scrollToCurrentSlide = useCallback(() => {
-    if (!slidesRef.current) return;
-
     const parent = slidesRef.current;
-    const slide = parent.children[currentSlide];
+    if (!parent) return;
 
-    const deltaX = slide.getBoundingClientRect().left - parent.getBoundingClientRect().left;
-    parent.style.translate = `${-deltaX}px`;
-  }, [currentSlide]);
+    const parentRect = parent.getBoundingClientRect();
+    const slideRect = parent.children[currentSlide].getBoundingClientRect();
+
+    const deltaX = slideRect.left - parentRect.left;
+
+    let offset = parentRect.width / 2 - slideRect.width / 2;
+    if (currentSlide === 0) {
+      offset = 0;
+    } else if (currentSlide === length - 1) {
+      offset = parentRect.width - slideRect.width;
+    }
+
+    parent.style.translate = `${-deltaX + offset}px`;
+  }, [currentSlide, length]);
 
   useEffect(() => {
     if (!slidesRef.current) return;
