@@ -14,6 +14,8 @@
     "@types/react-dom": "18.2.7",
     "eslint": "8.49.0",
     "eslint-config-next": "13.4.19",
+    "mobx": "^6.10.2",
+    "mobx-react-lite": "^4.0.5",
     "next": "13.4.19",
     "qweather-icons": "^1.5.0",
     "react": "18.2.0",

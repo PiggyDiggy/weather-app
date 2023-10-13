@@ -1,7 +1,11 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState, useRef } from "react";
+import { observer } from "mobx-react-lite";
 
+import { getAllWeatherClient } from "@/api/client";
+import { createSlides } from "@/utils";
+import { useStore } from "@/store/provider";
 import { CurrentWeather } from "@/entities/currentWeather";
 import { DailyWeather } from "@/entities/dailyWeather";
 import { HourlyWeather } from "@/entities/hourlyWeather";
@@ -11,13 +15,31 @@ import { WeatherWidget } from "../WeatherWidget";
 
 import style from "./style.module.css";
 
-export type Weather = { daily: DailyWeather; current?: CurrentWeather; hourly?: HourlyWeather[] };
+type Props = { daily: DailyWeather[]; current: CurrentWeather; hourly: HourlyWeather[] };
 
-type Props = {
-  slides: Weather[];
-};
+export const WeatherSlider: React.FC<Props> = observer(({ daily, current, hourly }) => {
+  const { location } = useStore();
+  const [slides, setSlides] = useState(() => createSlides(current, hourly, daily, location.utcOffset));
+  const isFirstRender = useRef(true);
 
-export const WeatherSlider: React.FC<Props> = ({ slides }) => {
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false;
+      return;
+    }
+
+    getAllWeatherClient({ location: location.id })
+      .then(({ currentWeather, dailyForecast, hourlyForecast }) => {
+        if (!currentWeather) {
+          return setSlides([]);
+        }
+        
+        const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, location.utcOffset);
+        setSlides(slides);
+      })
+      .catch(() => setSlides([]));
+  }, [location.id]);
+
   return (
     <section className={style.section}>
       <CustomSlider length={slides.length}>
@@ -34,4 +56,4 @@ export const WeatherSlider: React.FC<Props> = ({ slides }) => {
       </CustomSlider>
     </section>
   );
-};
+});

@@ -1,6 +1,7 @@
-import { createSlides } from "@/utils";
+import { StoreProvider } from "@/store/provider";
+import { LocationInput } from "@/components/LocationInput";
 import { WeatherSlider } from "@/components/WeatherSlider";
-import { getLocationByName, getCurrentWeather, getDailyForecast, getHourlyForecast } from "@/api";
+import { getLocationByName, getAllWeather } from "@/api/qweather";
 
 import style from "./page.module.css";
 
@@ -16,21 +17,18 @@ export default async function Page({ params: { location } }: Params) {
 
   const locationId = loc.id;
 
-  const [currentWeather, dailyForecast, hourlyForecast] = await Promise.all([
-    getCurrentWeather({ location: locationId }).catch(() => null),
-    getDailyForecast({ location: locationId }).catch(() => []),
-    getHourlyForecast({ location: locationId }).catch(() => []),
-  ]);
+  const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ location: locationId });
 
   if (!currentWeather) {
     return <div>Weather for current location is not available</div>;
   }
 
-  const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, loc.utcOffset);
-
   return (
     <div className={style.page}>
-      <WeatherSlider slides={slides} />
+      <StoreProvider location={loc}>
+        <LocationInput />
+        <WeatherSlider current={currentWeather} daily={dailyForecast} hourly={hourlyForecast} />
+      </StoreProvider>
     </div>
   );
 }

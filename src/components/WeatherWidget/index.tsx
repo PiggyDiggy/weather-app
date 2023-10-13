@@ -1,15 +1,14 @@
 import React from "react";
 
-import { cx, formatTemperature, getFormattedTime } from "@/utils";
+import { cx, formatTemperature, getFormattedTime, Slide } from "@/utils";
 
 import { Calendar, Sunrise, Sunset } from "../Icons";
 import { HourlyForecast } from "../HourlyForecast";
-import type { Weather } from "../WeatherSlider";
 
 import style from "./style.module.css";
 
 type Props = {
-  weather: Weather;
+  weather: Slide;
   isActive: boolean;
 };
 

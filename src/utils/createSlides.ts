@@ -1,7 +1,8 @@
-import type { Weather } from "@/components/WeatherSlider";
 import type { HourlyWeather } from "@/entities/hourlyWeather";
 import type { DailyWeather } from "@/entities/dailyWeather";
 import type { CurrentWeather } from "@/entities/currentWeather";
+
+export type Slide = { daily: DailyWeather; current?: CurrentWeather; hourly?: HourlyWeather[] };
 
 export const createSlides = (
   current: CurrentWeather,
@@ -13,12 +14,12 @@ export const createSlides = (
     const date = weather.fxDate.getUTCDate();
     acc[date] = { daily: weather };
     return acc;
-  }, {} as Record<string, Weather>);
+  }, {} as Record<string, Slide>);
 
   for (const hourlyForecast of hourly) {
     const dateObj = hourlyForecast.fxTime;
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + utcOffset);
-    
+
     const date = dateObj.getUTCDate();
     const forecast = slides[date].hourly ?? [];
     forecast.push(hourlyForecast);
