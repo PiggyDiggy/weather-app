@@ -4,10 +4,6 @@ import { Location, sortLocationsByRank } from "@/entities/location";
 import { getAllWeather } from "./qweather";
 import { method } from ".";
 
-type Params = {
-  location: string;
-};
-
 function getURL(path: string) {
   const url = new URL(window.location.host);
 
@@ -16,10 +12,10 @@ function getURL(path: string) {
 
 type AllWeather = Awaited<ReturnType<typeof getAllWeather>>;
 
-export function getAllWeatherClient({ location }: Params) {
+export function getAllWeatherClient({ locationId }: { locationId: string }) {
   return method<{ error: string } | AllWeather, AllWeather>({
     path: getURL("weather"),
-    params: { location },
+    params: { id: locationId },
     process(response) {
       if ("error" in response) {
         throw new Error(response.error);
@@ -34,10 +30,10 @@ export function getAllWeatherClient({ location }: Params) {
   });
 }
 
-export function searchLocationsByName({ location }: Params) {
+export function searchLocationsByName({ locationName }: { locationName: string }) {
   return method<{ error: string } | Location[], Location[]>({
     path: getURL("location"),
-    params: { location },
+    params: { name: locationName },
     process(response) {
       if ("error" in response) {
         throw new Error(response.error);

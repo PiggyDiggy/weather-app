@@ -28,12 +28,12 @@ export const WeatherSlider: React.FC<Props> = observer(({ daily, current, hourly
       return;
     }
 
-    getAllWeatherClient({ location: location.id })
+    getAllWeatherClient({ locationId: location.id })
       .then(({ currentWeather, dailyForecast, hourlyForecast }) => {
         if (!currentWeather) {
           return setSlides([]);
         }
-        
+
         const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, location.utcOffset);
         setSlides(slides);
       })

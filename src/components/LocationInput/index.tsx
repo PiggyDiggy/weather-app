@@ -26,7 +26,7 @@ export const LocationInput = observer(() => {
         .join(",");
       if (!locationName) return;
 
-      searchLocationsByName({ location: locationName })
+      searchLocationsByName({ locationName })
         .then((response) => {
           setOptions(response);
         })
