@@ -1,8 +1,8 @@
 import { restoreDateObjectsInArray } from "@/utils";
+import { Location, sortLocationsByRank } from "@/entities/location";
 
 import { getAllWeather } from "./qweather";
 import { method } from ".";
-import { Location } from "@/entities/location";
 
 type Params = {
   location: string;
@@ -24,6 +24,7 @@ export function getAllWeatherClient({ location }: Params) {
       if ("error" in response) {
         throw new Error(response.error);
       }
+
       return {
         dailyForecast: restoreDateObjectsInArray(response.dailyForecast, ["fxDate", "sunrise", "sunset"]),
         hourlyForecast: restoreDateObjectsInArray(response.hourlyForecast, ["fxTime"]),
@@ -33,6 +34,16 @@ export function getAllWeatherClient({ location }: Params) {
   });
 }
 
-export function getLocationClient({ location }: Params) {
-  return method<Location | null>({ path: getURL("location"), params: { location } });
+export function searchLocationsByName({ location }: Params) {
+  return method<{ error: string } | Location[], Location[]>({
+    path: getURL("location"),
+    params: { location },
+    process(response) {
+      if ("error" in response) {
+        throw new Error(response.error);
+      }
+
+      return sortLocationsByRank(response);
+    },
+  });
 }

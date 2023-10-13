@@ -1,4 +1,4 @@
-import { RawLocation, Location, normalizeLocation } from "@/entities/location";
+import { RawLocation, Location, normalizeLocationsArray } from "@/entities/location";
 import { RawCurrentWeather, CurrentWeather, normalizeCurrentWeather } from "@/entities/currentWeather";
 import { RawDailyWeather, DailyWeather, normalizeDailyWeatherArray } from "@/entities/dailyWeather";
 import { RawHourlyWeather, HourlyWeather, normalizeHourlyWeatherArray } from "@/entities/hourlyWeather";
@@ -35,14 +35,15 @@ export function getCurrentWeather({ location }: Params) {
 }
 
 export function getLocationByName({ location }: Params) {
-  return qWeatherMethod<{ location: RawLocation[] }, Location | null>({
+  return qWeatherMethod<{ location: RawLocation[] }, Location[] | null>({
     path: "https://geoapi.qweather.com/v2/city/lookup",
     params: { location },
     process(response) {
       if (response.code !== "200") {
         return null;
       }
-      return normalizeLocation(response.location[0]);
+
+      return normalizeLocationsArray(response.location);
     },
   });
 }

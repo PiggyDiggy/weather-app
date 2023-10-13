@@ -2,6 +2,7 @@ import { StoreProvider } from "@/store/provider";
 import { LocationInput } from "@/components/LocationInput";
 import { WeatherSlider } from "@/components/WeatherSlider";
 import { getLocationByName, getAllWeather } from "@/api/qweather";
+import { getMostRelevantLocation } from "@/entities/location";
 
 import style from "./page.module.css";
 
@@ -15,9 +16,8 @@ export default async function Page({ params: { location } }: Params) {
     return <div>Location not found</div>;
   }
 
-  const locationId = loc.id;
-
-  const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ location: locationId });
+  const mostRelevantLocation = getMostRelevantLocation(loc);
+  const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ location: mostRelevantLocation.id });
 
   if (!currentWeather) {
     return <div>Weather for current location is not available</div>;
@@ -25,7 +25,7 @@ export default async function Page({ params: { location } }: Params) {
 
   return (
     <div className={style.page}>
-      <StoreProvider location={loc}>
+      <StoreProvider location={mostRelevantLocation}>
         <LocationInput />
         <WeatherSlider current={currentWeather} daily={dailyForecast} hourly={hourlyForecast} />
       </StoreProvider>
