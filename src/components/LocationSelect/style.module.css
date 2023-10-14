@@ -1,0 +1,56 @@
+.location-options-list {
+  padding: 0;
+  margin: 0;
+  list-style: none;
+  background-color: white;
+  border: var(--border);
+  border-top: none;
+  border-bottom-left-radius: var(--border-radius);
+  border-bottom-right-radius: var(--border-radius);
+  overflow: hidden;
+  transition: height 0.2s ease-out;
+}
+
+.location-option {
+  padding: 8px 16px;
+  cursor: pointer;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  transition: background-color 0.1s ease-out;
+}
+
+.location-option:hover {
+  background-color: whitesmoke;
+}
+
+.location-option:focus {
+  outline-width: 0;
+  outline-color: transparent;
+}
+
+.location-option_selected {
+  background-color: #abdcff;
+}
+
+.location-option_selected:hover {
+  background-color: var(--accent-light);
+}
+
+.location-options_enter {
+  opacity: 0;
+}
+
+.location-options_enter-active {
+  opacity: 1;
+  transition: height 0.2s ease-out, opacity 0.1s ease-out;
+}
+
+.location-options_exit {
+  opacity: 1;
+}
+
+.location-options_exit-active {
+  opacity: 0;
+  transition: height 0.2s ease-out, opacity 0.1s ease-out;
+}

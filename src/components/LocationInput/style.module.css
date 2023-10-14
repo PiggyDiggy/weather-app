@@ -1,24 +1,51 @@
 .container {
-  position: absolute;
+  position: fixed;
+  top: 28px;
+  left: 28px;
+  z-index: 10;
+  width: 100%;
+  max-width: 350px;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  color: var(--text-main);
+  --border: 2px solid var(--accent-light);
+  --border-radius: 12px;
+}
+
+.backdrop {
+  position: fixed;
   inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: -1;
 }
 
 .location-input-wrapper {
   position: relative;
-  color: var(--text-main);
-  display: inline-block;
-  margin-left: 28px;
-  margin-top: 28px;
 }
 
 .location-input {
-  border: 2px solid var(--accent-light);
+  border: var(--border);
+  border-radius: var(--border-radius);
   font-family: inherit;
   font-size: 24px;
   color: inherit;
-  border-radius: 12px;
   padding: 18px 36px 18px 16px;
   text-overflow: ellipsis;
+  width: 100%;
+  transition: border-radius 0.2s ease-out;
+}
+
+.location-input:focus {
+  outline-color: transparent;
+  outline-width: 0;
+}
+
+.location-input_focused {
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
 }
 
 .location-icon {
@@ -27,6 +54,24 @@
   top: 0;
   bottom: 0;
   margin-block: auto;
-  height: fit-content;
+  height: 24px;
   pointer-events: none;
+}
+
+.backdrop_enter {
+  opacity: 0;
+}
+
+.backdrop_enter-active {
+  opacity: 1;
+  transition: opacity 0.2s ease-out;
+}
+
+.backdrop_exit {
+  opacity: 1;
+}
+
+.backdrop_exit-active {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
 }

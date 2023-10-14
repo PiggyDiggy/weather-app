@@ -1,71 +1,65 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
+import { observer } from "mobx-react-lite";
+import { CSSTransition } from "react-transition-group";
 
-import { searchLocationsByName } from "@/api/client";
 import { useStore } from "@/store/provider";
-import { Location } from "@/entities/location";
+import { cx, formatLocationName } from "@/utils";
 
+import { LocationSelect } from "../LocationSelect";
 import { MapPin } from "../Icons/MapPin";
 
 import style from "./style.module.css";
-import { observer } from "mobx-react-lite";
 
-const formatLocationName = (location: Location) => `${location.name}, ${location.country}`;
-
-export const LocationInput = observer(() => {
+export const LocationInput = observer(function LocationInput() {
   const store = useStore();
-  const [value, setValue] = useState(() => formatLocationName(store.location));
-  const [options, setOptions] = useState([] as Location[]);
+  const [value, setValue] = useState(() => formatLocationName(store.location, false));
+  const [isFocused, setIsFocused] = useState(false);
 
   useEffect(() => {
-    let timeoutId = setTimeout(() => {
-      const locationName = value
-        .split(", ")
-        .map((part) => part.trim())
-        .join(",");
-      if (!locationName) return;
-
-      searchLocationsByName({ locationName })
-        .then((response) => {
-          setOptions(response);
-        })
-        .catch(() => {
-          setOptions([]);
-        });
-    }, 300);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [value]);
+    setIsFocused(false);
+    setValue(formatLocationName(store.location, false));
+  }, [store.location.id]);
 
   return (
     <div className={style.container}>
-      <div className={style["location-input-wrapper"]}>
-        <input
-          className={style["location-input"]}
-          type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-        />
-        <div className={style["location-icon"]}>
-          <MapPin />
-        </div>
-      </div>
-      <ul>
-        {options.map((option) => (
-          <li
-            key={option.id}
-            onClick={() => {
-              store.location = option;
-              setValue(formatLocationName(option));
+      <CSSTransition
+        classNames={{
+          enter: style["backdrop_enter"],
+          enterActive: style["backdrop_enter-active"],
+          exit: style["backdrop_exit"],
+          exitActive: style["backdrop_exit-active"],
+        }}
+        in={isFocused}
+        timeout={200}
+        unmountOnExit
+        mountOnEnter
+      >
+        <div className={style.backdrop} onClick={() => setIsFocused(false)}></div>
+      </CSSTransition>
+      <div className={style.content}>
+        <div className={style["location-input-wrapper"]}>
+          <input
+            className={cx(style["location-input"], { [style["location-input_focused"]]: isFocused })}
+            type="text"
+            value={value}
+            onChange={(e) => setValue(e.target.value)}
+            onFocus={() => setIsFocused(true)}
+            onKeyDown={({ key }) => {
+              if (key === "Enter") {
+                setIsFocused(false);
+              }
             }}
-          >
-            {option.name}, {option.country}
-          </li>
-        ))}
-      </ul>
+            id="location-input"
+            autoComplete="off"
+          />
+          <div className={style["location-icon"]}>
+            <MapPin />
+          </div>
+        </div>
+        <LocationSelect isOpen={isFocused} suggest={value} />
+      </div>
     </div>
   );
 });

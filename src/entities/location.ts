@@ -7,15 +7,17 @@ export type Location = {
   utcOffset: number;
   country: string;
   rank: number;
+  adm1: string;
 };
 
 export type RawLocation = RawEntity<Location>;
 
-export const normalizeLocation = ({ name, id, tz, utcOffset, country, rank }: RawLocation): Location => ({
+export const normalizeLocation = ({ name, id, tz, utcOffset, country, rank, adm1 }: RawLocation): Location => ({
   name,
   id,
   tz,
   country,
+  adm1,
   rank: Number(rank),
   utcOffset: getUTCOffsetMinutes(utcOffset),
 });
