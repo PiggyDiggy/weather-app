@@ -1,48 +1,33 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useCallback } from "react";
 import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
 import { cx, formatLocationName } from "@/utils";
 import { useStore } from "@/store/provider";
 import type { Location } from "@/entities/location";
-import { searchLocationsByName } from "@/api/client";
+
+import { useLocationInputStore } from "../LocationInput/store/provider";
 
 import style from "./style.module.css";
 
 type Props = {
-  suggest: string;
   isOpen: boolean;
 };
 
-export const LocationSelect: React.FC<Props> = observer(function LocationSelect({ suggest, isOpen }) {
+export const LocationSelect: React.FC<Props> = observer(function LocationSelect({ isOpen }) {
   const store = useStore();
-  const [options, setOptions] = useState([] as Location[]);
+  const { options } = useLocationInputStore();
   const [selectedId, setSelectedId] = useState(0);
 
   const listRef = useRef<HTMLUListElement>(null);
   const listHeight = useRef(0);
 
-  useEffect(() => {
-    let timeoutId = setTimeout(() => {
-      const locationName = suggest
-        .split(", ")
-        .map((part) => part.trim())
-        .join(",");
-      if (!locationName) return;
-
-      searchLocationsByName({ locationName })
-        .then((response) => {
-          setOptions(response);
-        })
-        .catch(() => {
-          setOptions([]);
-        });
-    }, 250);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [suggest]);
+  const changeLocation = useCallback(
+    (newLocation: Location) => {
+      store.location = newLocation;
+    },
+    [store]
+  );
 
   useEffect(() => {
     const handleKeyDown = ({ key }: KeyboardEvent) => {
@@ -61,6 +46,20 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
   }, [options.length]);
 
   useEffect(() => {
+    const handleKeyDown = ({ key }: KeyboardEvent) => {
+      if (key === "Enter") {
+        changeLocation(options[selectedId]);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [options, selectedId, changeLocation]);
+
+  useEffect(() => {
     if (!listRef.current) return;
 
     const selectedElement = listRef.current.children[selectedId] as HTMLElement | undefined;
@@ -71,13 +70,16 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
     const list = listRef.current;
     if (!list) return;
 
-    listHeight.current = list.scrollHeight;
+    if (options.length === 0) {
+      listHeight.current = 0;
+    } else {
+      const lastOptionElementRect = list.children[options.length - 1].getBoundingClientRect();
+      const listRect = list.getBoundingClientRect();
+      listHeight.current = lastOptionElementRect.top - listRect.top + lastOptionElementRect.height;
+    }
+
     grow();
   }, [options.length]);
-
-  const changeLocation = (newLocation: Location) => {
-    store.location = newLocation;
-  };
 
   const shrink = () => {
     const list = listRef.current;
@@ -96,10 +98,8 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
   return (
     <CSSTransition
       classNames={{
-        enter: style["location-options_enter"],
-        enterActive: style["location-options_enter-active"],
-        exit: style["location-options_exit"],
-        exitActive: style["location-options_exit-active"],
+        enterActive: style["location-options_transition"],
+        exitActive: style["location-options_transition"],
       }}
       in={isOpen}
       timeout={200}
@@ -121,11 +121,6 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
             className={cx(style["location-option"], { [style["location-option_selected"]]: i === selectedId })}
             onClick={() => changeLocation(option)}
             onFocus={() => setSelectedId(i)}
-            onKeyDown={({ key }) => {
-              if (key === "Enter") {
-                changeLocation(option);
-              }
-            }}
             title={formatLocationName(option)}
           >
             {formatLocationName(option)}

@@ -3,6 +3,7 @@ import { LocationInput } from "@/components/LocationInput";
 import { WeatherSlider } from "@/components/WeatherSlider";
 import { getLocationsByName, getAllWeather } from "@/api/qweather";
 import { getMostRelevantLocation } from "@/entities/location";
+import { LocationInputStoreProvider } from "@/components/LocationInput/store/provider";
 
 import style from "./page.module.css";
 
@@ -26,7 +27,9 @@ export default async function Page({ params: { location } }: Params) {
   return (
     <div className={style.page}>
       <StoreProvider location={mostRelevantLocation}>
-        <LocationInput />
+        <LocationInputStoreProvider>
+          <LocationInput />
+        </LocationInputStoreProvider>
         <WeatherSlider current={currentWeather} daily={dailyForecast} hourly={hourlyForecast} />
       </StoreProvider>
     </div>

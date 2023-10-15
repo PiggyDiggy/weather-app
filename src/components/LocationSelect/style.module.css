@@ -3,12 +3,8 @@
   margin: 0;
   list-style: none;
   background-color: white;
-  border: var(--border);
-  border-top: none;
-  border-bottom-left-radius: var(--border-radius);
-  border-bottom-right-radius: var(--border-radius);
   overflow: hidden;
-  transition: height 0.2s ease-out;
+  transition: height 0.1s ease-out;
 }
 
 .location-option {
@@ -37,20 +33,6 @@
   background-color: var(--accent-light);
 }
 
-.location-options_enter {
-  opacity: 0;
-}
-
-.location-options_enter-active {
-  opacity: 1;
-  transition: height 0.2s ease-out, opacity 0.1s ease-out;
-}
-
-.location-options_exit {
-  opacity: 1;
-}
-
-.location-options_exit-active {
-  opacity: 0;
-  transition: height 0.2s ease-out, opacity 0.1s ease-out;
+.location-options_transition {
+  transition: height 0.2s ease-out;
 }
