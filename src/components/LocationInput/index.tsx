@@ -8,31 +8,29 @@ import { useStore } from "@/store/provider";
 import { formatLocationName } from "@/utils";
 
 import { LocationSelect } from "../LocationSelect";
-import { MapPin } from "../Icons/MapPin";
+import { StateIcon } from "../StateIcon";
 
 import { useLocationInputStore } from "./store/provider";
 import style from "./style.module.css";
 
 export const LocationInput = observer(function LocationInput() {
   const store = useStore();
-  const { setInputValue, inputValue, loadOptions } = useLocationInputStore();
-  const [isFocused, setIsFocused] = useState(false);
+  const { loadOptions, focused, setFocused, state } = useLocationInputStore();
+  const [value, setValue] = useState(() => formatLocationName(store.location, false));
 
   useEffect(() => {
-    setIsFocused(false);
-  }, [store.location.id]);
+    setValue(formatLocationName(store.location, false));
+  }, [focused]);
 
   useEffect(() => {
-    setInputValue(formatLocationName(store.location, false));
-  }, [isFocused]);
-
-  useEffect(() => {
-    let timeoutId = setTimeout(loadOptions, 250);
+    let timeoutId = setTimeout(() => {
+      loadOptions(value);
+    }, 250);
 
     return () => {
       clearTimeout(timeoutId);
     };
-  }, [inputValue]);
+  }, [value]);
 
   return (
     <div className={style.container}>
@@ -43,27 +41,25 @@ export const LocationInput = observer(function LocationInput() {
           exit: style["backdrop_exit"],
           exitActive: style["backdrop_exit-active"],
         }}
-        in={isFocused}
+        in={focused}
         timeout={200}
         unmountOnExit
         mountOnEnter
       >
-        <div className={style.backdrop} onClick={() => setIsFocused(false)}></div>
+        <div className={style.backdrop} onClick={() => setFocused(false)}></div>
       </CSSTransition>
       <div className={style["location-input-wrapper"]}>
         <input
           className={style["location-input"]}
           type="text"
-          value={inputValue}
-          onChange={(e) => setInputValue(e.target.value)}
-          onFocus={() => setIsFocused(true)}
+          value={value}
+          onChange={(e) => setValue(e.target.value)}
+          onFocus={() => setFocused(true)}
           id="location-input"
           autoComplete="off"
         />
-        <div className={style["location-icon"]}>
-          <MapPin />
-        </div>
-        <LocationSelect isOpen={isFocused} />
+        <StateIcon state={state} className={style["location-icon"]} />
+        <LocationSelect />
       </div>
     </div>
   );

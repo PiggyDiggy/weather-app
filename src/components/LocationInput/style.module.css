@@ -21,6 +21,7 @@
   border: 2px solid var(--accent-light);
   border-radius: 12px;
   overflow: hidden;
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
 }
 
 .location-input {

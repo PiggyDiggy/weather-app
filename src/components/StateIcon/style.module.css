@@ -1,0 +1,45 @@
+.path-animate {
+  stroke-dasharray: 100;
+  stroke-dashoffset: 0;
+  stroke-dasharray: 100;
+  stroke: url(#icon-gradient);
+  transition: d 0.2s ease-out;
+}
+
+.icon_loading .path-animate {
+  d: path(
+    "M 12.965 4.138 C 15.607 4.138 18.274 5.212 20.106 7.115 C 21.901 8.979 22.896 11.472 22.879 14.059 C 22.859 17.069 21.467 19.905 19.098 21.761 C 18.309 22.379 17.431 22.873 16.493 23.226 C 15.432 23.626 14.14 23.84 13.006 23.861 C 11.951 23.879 10.501 23.637 9.501 23.237 C 8.501 22.837 7.701 22.337 6.901 21.737 C 4.501 19.937 3.101 17.037 3.122 14.048 C 3.101 11.437 4.101 8.937 5.901 7.137 C 7.701 5.237 10.447 4.106 12.965 4.138 Z"
+  );
+  transform-origin: center;
+  animation: loading 1s 0.2s linear infinite;
+}
+
+.icon-gradient {
+  stop-color: var(--text-main);
+  transition: stop-color 0.2s ease-out;
+}
+
+.icon_loading .icon-gradient__from {
+  stop-color: var(--accent-light);
+}
+
+.icon_loading .icon-gradient__to {
+  stop-color: #29b2ff;
+}
+
+.inner-circle {
+  transform-origin: center;
+  transition: scale 0.2s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.2s ease-out;
+}
+
+.icon_loading .inner-circle {
+  scale: 0;
+  translate: 0 2px;
+  transition: scale 0.2s cubic-bezier(0.36, 0, 0.66, -0.56), translate 0.2s ease-out;
+}
+
+@keyframes loading {
+  100% {
+    rotate: -1turn;
+  }
+}

@@ -10,13 +10,9 @@ import { useLocationInputStore } from "../LocationInput/store/provider";
 
 import style from "./style.module.css";
 
-type Props = {
-  isOpen: boolean;
-};
-
-export const LocationSelect: React.FC<Props> = observer(function LocationSelect({ isOpen }) {
+export const LocationSelect = observer(function LocationSelect() {
   const store = useStore();
-  const { options } = useLocationInputStore();
+  const { options, focused, setFocused } = useLocationInputStore();
   const [selectedId, setSelectedId] = useState(0);
 
   const listRef = useRef<HTMLUListElement>(null);
@@ -25,6 +21,7 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
   const changeLocation = useCallback(
     (newLocation: Location) => {
       store.location = newLocation;
+      setFocused(false);
     },
     [store]
   );
@@ -47,7 +44,7 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
 
   useEffect(() => {
     const handleKeyDown = ({ key }: KeyboardEvent) => {
-      if (key === "Enter") {
+      if (key === "Enter" && options.length > 0) {
         changeLocation(options[selectedId]);
       }
     };
@@ -101,7 +98,7 @@ export const LocationSelect: React.FC<Props> = observer(function LocationSelect(
         enterActive: style["location-options_transition"],
         exitActive: style["location-options_transition"],
       }}
-      in={isOpen}
+      in={focused}
       timeout={200}
       nodeRef={listRef}
       onEnter={shrink}
