@@ -1,4 +1,5 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, flowResult } from "mobx";
+import { CancellablePromise } from "mobx/dist/internal";
 
 import { searchLocationsByName } from "@/api/client";
 import type { Location } from "@/entities/location";
@@ -6,28 +7,43 @@ import type { DataState } from "@/types";
 
 export class LocationInputStore {
   constructor() {
-    this.options = [];
-    this.focused = false;
-    this.state = "done";
-    makeAutoObservable(this, {}, { autoBind: true });
+    makeAutoObservable<LocationInputStore, "flow" | "abortController">(
+      this,
+      { abortController: false, flow: false },
+      { autoBind: true }
+    );
   }
 
-  options: Location[];
+  options: Location[] = [];
 
   private setOptions(newOptions: Location[]) {
     this.options = newOptions;
   }
 
-  async loadOptions(suggest: string) {
+  private flow: CancellablePromise<void> | null = null;
+  private abortController: AbortController | null = null;
+
+  loadOptions(suggest: string) {
+    this.flow?.cancel();
+    this.abortController?.abort();
+
+    this.abortController = new AbortController();
+    this.flow = flowResult(this.fetchOptions(suggest));
+    this.flow.catch(() => {});
+  }
+
+  private *fetchOptions(suggest: string): Generator<Promise<Location[]>, void, Location[]> {
     const locationName = suggest
       .split(", ")
       .map((part) => part.trim())
       .join(",");
-    if (locationName.length < 2) return;
 
     this.setState("loading");
     try {
-      const response = await searchLocationsByName({ locationName });
+      const response = yield searchLocationsByName({
+        locationName,
+        fetchOptions: { signal: this.abortController?.signal },
+      });
       this.setOptions(response);
       this.setState("done");
     } catch {
@@ -36,13 +52,13 @@ export class LocationInputStore {
     }
   }
 
-  focused: boolean;
+  focused = false;
 
   setFocused(newFocused: boolean) {
     this.focused = newFocused;
   }
 
-  state: DataState;
+  state: DataState = "done";
 
   private setState(newState: DataState) {
     this.state = newState;

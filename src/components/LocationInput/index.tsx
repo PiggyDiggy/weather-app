@@ -23,9 +23,9 @@ export const LocationInput = observer(function LocationInput() {
   }, [focused]);
 
   useEffect(() => {
-    let timeoutId = setTimeout(() => {
+    let timeoutId = value.length > 1 ? setTimeout(() => {
       loadOptions(value);
-    }, 250);
+    }, 250) : undefined;
 
     return () => {
       clearTimeout(timeoutId);

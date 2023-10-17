@@ -30,10 +30,11 @@ export function getAllWeatherClient({ locationId }: { locationId: string }) {
   });
 }
 
-export function searchLocationsByName({ locationName }: { locationName: string }) {
+export function searchLocationsByName({ locationName, fetchOptions }: { locationName: string, fetchOptions?: RequestInit}) {
   return method<{ error: string } | Location[], Location[]>({
     path: getURL("location"),
     params: { name: locationName },
+    fetchOptions,
     process(response) {
       if ("error" in response) {
         throw new Error(response.error);
