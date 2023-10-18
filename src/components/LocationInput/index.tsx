@@ -4,13 +4,13 @@ import React, { useEffect, useState } from "react";
 import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
+import { useLocationInputStore } from "@/store/locationInput/provider";
 import { useStore } from "@/store/provider";
 import { formatLocationName } from "@/utils";
 
 import { LocationSelect } from "../LocationSelect";
 import { StateIcon } from "../StateIcon";
 
-import { useLocationInputStore } from "./store/provider";
 import style from "./style.module.css";
 
 export const LocationInput = observer(function LocationInput() {

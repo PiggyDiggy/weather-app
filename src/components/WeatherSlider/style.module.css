@@ -1,12 +1,3 @@
-.section {
-  min-height: 275px;
-  background-image: linear-gradient(180deg, #badcdd 0%, #29b2ff 100%);
-  overflow-x: hidden;
-  padding-inline: 64px;
-  display: flex;
-  align-items: center;
-}
-
 .weather-slider__slides {
   gap: 0;
   overscroll-behavior-x: none;

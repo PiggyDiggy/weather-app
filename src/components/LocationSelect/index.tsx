@@ -3,10 +3,9 @@ import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
 import { cx, formatLocationName } from "@/utils";
+import { useLocationInputStore } from "@/store/locationInput/provider";
 import { useStore } from "@/store/provider";
 import type { Location } from "@/entities/location";
-
-import { useLocationInputStore } from "../LocationInput/store/provider";
 
 import style from "./style.module.css";
 

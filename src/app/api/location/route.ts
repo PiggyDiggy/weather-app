@@ -1,4 +1,4 @@
-import { getLocationsByName } from "@/api/qweather";
+import { getLocations } from "@/api/qweather";
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
@@ -7,7 +7,7 @@ export async function GET(request: Request) {
   if (!locationName) {
     return Response.json({ error: "location name was not provided" });
   }
-  const location = await getLocationsByName({ locationName });
+  const location = await getLocations({ locationParam: locationName });
 
   return Response.json(location);
 }

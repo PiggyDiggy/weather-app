@@ -1,37 +1,26 @@
-import { StoreProvider } from "@/store/provider";
-import { LocationInput } from "@/components/LocationInput";
 import { WeatherSlider } from "@/components/WeatherSlider";
-import { getLocationsByName, getAllWeather } from "@/api/qweather";
+import { getAllWeather, getLocations } from "@/api/qweather";
 import { getMostRelevantLocation } from "@/entities/location";
-import { LocationInputStoreProvider } from "@/components/LocationInput/store/provider";
-
-import style from "./page.module.css";
+import { createSlides } from "@/utils";
 
 type Params = {
   params: { location: string };
 };
 
-export default async function Page({ params: { location } }: Params) {
-  const loc = await getLocationsByName({ locationName: location }).catch(() => null);
-  if (!loc) {
+export default async function Page({ params }: Params) {
+  const locations = await getLocations({ locationParam: params.location }).catch(() => null);
+  if (!locations) {
     return <div>Location not found</div>;
   }
 
-  const mostRelevantLocation = getMostRelevantLocation(loc);
-  const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ locationId: mostRelevantLocation.id });
+  const mostRelevant = getMostRelevantLocation(locations);
+  const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ locationId: mostRelevant.id });
 
   if (!currentWeather) {
     return <div>Weather for current location is not available</div>;
   }
 
-  return (
-    <div className={style.page}>
-      <StoreProvider location={mostRelevantLocation}>
-        <LocationInputStoreProvider>
-          <LocationInput />
-        </LocationInputStoreProvider>
-        <WeatherSlider current={currentWeather} daily={dailyForecast} hourly={hourlyForecast} />
-      </StoreProvider>
-    </div>
-  );
+  const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, mostRelevant.utcOffset);
+
+  return <WeatherSlider slides={slides} />;
 }

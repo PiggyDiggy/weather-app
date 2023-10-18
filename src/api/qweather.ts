@@ -34,10 +34,10 @@ export function getCurrentWeather({ locationId }: Params) {
   });
 }
 
-export function getLocationsByName({ locationName }: { locationName: string }) {
+export function getLocations({ locationParam }: { locationParam: string }) {
   return qWeatherMethod<{ location: RawLocation[] }, Location[] | null>({
     path: "https://geoapi.qweather.com/v2/city/lookup",
-    params: { location: locationName },
+    params: { location: locationParam },
     process(response) {
       if (response.code !== "200") {
         return null;
