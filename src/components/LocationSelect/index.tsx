@@ -1,29 +1,21 @@
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
 import { cx, formatLocationName } from "@/utils";
-import { useLocationInputStore } from "@/store/locationInput/provider";
 import { useStore } from "@/store/provider";
-import type { Location } from "@/entities/location";
 
 import style from "./style.module.css";
 
 export const LocationSelect = observer(function LocationSelect() {
-  const store = useStore();
-  const { options, focused, setFocused } = useLocationInputStore();
+  const { locationInputStore } = useStore();
+  const { options, changeLocation } = locationInputStore.domainStore;
+  const { focused } = locationInputStore.uiStore;
+
   const [selectedId, setSelectedId] = useState(0);
 
   const listRef = useRef<HTMLUListElement>(null);
   const listHeight = useRef(0);
-
-  const changeLocation = useCallback(
-    (newLocation: Location) => {
-      store.location = newLocation;
-      setFocused(false);
-    },
-    [store]
-  );
 
   useEffect(() => {
     const handleKeyDown = ({ key }: KeyboardEvent) => {

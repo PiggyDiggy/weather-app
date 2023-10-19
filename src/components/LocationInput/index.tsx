@@ -1,12 +1,10 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
-import { useLocationInputStore } from "@/store/locationInput/provider";
 import { useStore } from "@/store/provider";
-import { formatLocationName } from "@/utils";
 
 import { LocationSelect } from "../LocationSelect";
 import { StateIcon } from "../StateIcon";
@@ -15,22 +13,7 @@ import style from "./style.module.css";
 
 export const LocationInput = observer(function LocationInput() {
   const store = useStore();
-  const { loadOptions, focused, setFocused, state } = useLocationInputStore();
-  const [value, setValue] = useState(() => formatLocationName(store.location, false));
-
-  useEffect(() => {
-    setValue(formatLocationName(store.location, false));
-  }, [focused]);
-
-  useEffect(() => {
-    let timeoutId = value.length > 1 ? setTimeout(() => {
-      loadOptions(value);
-    }, 250) : undefined;
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [value]);
+  const { focused, setFocused, inputValue, setInputValue } = store.locationInputStore.uiStore;
 
   return (
     <div className={style.container}>
@@ -52,13 +35,12 @@ export const LocationInput = observer(function LocationInput() {
         <input
           className={style["location-input"]}
           type="text"
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
+          value={inputValue}
+          onChange={(e) => setInputValue(e.target.value)}
           onFocus={() => setFocused(true)}
-          id="location-input"
           autoComplete="off"
         />
-        <StateIcon state={state} className={style["location-icon"]} />
+        <StateIcon className={style["location-icon"]} />
         <LocationSelect />
       </div>
     </div>

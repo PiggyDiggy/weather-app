@@ -1,16 +1,19 @@
 import React from "react";
+import { observer } from "mobx-react-lite";
 
-import type { DataState } from "@/types";
+import { useStore } from "@/store/provider";
 import { cx } from "@/utils";
 
 import style from "./style.module.css";
 
 type Props = {
-  state: DataState;
   className?: string;
 };
 
-export const StateIcon: React.FC<Props> = ({ state, className }) => {
+export const StateIcon: React.FC<Props> = observer(({ className }) => {
+  const store = useStore();
+  const { state } = store.locationInputStore.uiStore;
+
   return (
     <svg
       className={cx(className, {
@@ -40,4 +43,4 @@ export const StateIcon: React.FC<Props> = ({ state, className }) => {
       <circle className={style["inner-circle"]} cx={13} cy={12} r={4} />
     </svg>
   );
-};
+});

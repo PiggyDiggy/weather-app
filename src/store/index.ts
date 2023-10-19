@@ -1,28 +1,15 @@
-import { makeAutoObservable } from "mobx";
-
-import { Location } from "@/entities/location";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
-const initialState = {} as Location;
 
-export class Store {
-  private _location = initialState;
-  private router: AppRouterInstance;
+import { LocationStore } from "./location";
+import { LocationInputStore } from "./locationInput";
 
-  constructor(location: Location | null, router: AppRouterInstance) {
-    makeAutoObservable<Store, "_location" | "router">(this, { _location: false, router: false });
-    this.location = location ?? initialState;
-    this.router = router;
-  }
+export class RootStore {
+  locationStore: LocationStore;
+  locationInputStore: LocationInputStore;
 
-  get location() {
-    return this._location;
-  }
-
-  set location(location: Location) {
-    this._location = location;
-    if (this.router) {
-      this.router.push(`/${location.id}`);
-    }
+  constructor(router: AppRouterInstance) {
+    this.locationInputStore = new LocationInputStore(this);
+    this.locationStore = new LocationStore(router, this);
   }
 }

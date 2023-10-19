@@ -3,12 +3,21 @@ import { getAllWeather, getLocations } from "@/api/qweather";
 import { getMostRelevantLocation } from "@/entities/location";
 import { createSlides } from "@/utils";
 
-type Params = {
+type Props = {
   params: { location: string };
+  searchParams: Record<string, string | string[] | undefined>;
 };
 
-export default async function Page({ params }: Params) {
-  const locations = await getLocations({ locationParam: params.location }).catch(() => null);
+function getLocationParam({ params, searchParams }: Props) {
+  if (searchParams.id) {
+    return Array.isArray(searchParams.id) ? searchParams.id[0] : searchParams.id;
+  }
+  return decodeURIComponent(params.location);
+}
+
+export default async function Page(props: Props) {
+  const locationParam = getLocationParam(props);
+  const locations = await getLocations({ locationParam }).catch(() => null);
   if (!locations) {
     return <div>Location not found</div>;
   }
@@ -22,5 +31,5 @@ export default async function Page({ params }: Params) {
 
   const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, mostRelevant.utcOffset);
 
-  return <WeatherSlider slides={slides} />;
+  return <WeatherSlider slides={slides} location={mostRelevant} />;
 }

@@ -2,9 +2,8 @@ import { Rubik } from "next/font/google";
 import type { Metadata } from "next";
 import "qweather-icons/font/qweather-icons.css";
 
-import { StoreProvider } from "@/store/provider";
-import { LocationInputStoreProvider } from "@/store/locationInput/provider";
 import { LocationInput } from "@/components/LocationInput";
+import { RootStoreProvider } from "@/store/provider";
 
 import "./globals.css";
 
@@ -20,12 +19,10 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html className={rubik.className} lang="en">
       <body>
         <main>
-          <StoreProvider location={null}>
-            <LocationInputStoreProvider>
-              <LocationInput />
-            </LocationInputStoreProvider>
+          <RootStoreProvider>
+            <LocationInput />
             {children}
-          </StoreProvider>
+          </RootStoreProvider>
         </main>
       </body>
     </html>
