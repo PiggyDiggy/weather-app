@@ -14,6 +14,12 @@
   animation: loading 1s 0.2s linear infinite;
 }
 
+.icon_error .path-animate {
+  d: path(
+    "M 12.999 1 C 14.227 1 15.338 1.358 16.142 1.938 C 16.946 2.517 17.443 3.317 17.443 4.201 C 17.443 5.086 16.946 8.971 16.142 12.633 C 15.889 13.784 15.606 14.914 15.298 15.922 C 14.628 18.118 13.841 19.736 12.999 19.736 C 12.158 19.736 11.372 18.118 10.701 15.92 C 10.394 14.914 10.111 13.784 9.858 12.633 C 9.054 8.971 8.557 5.085 8.557 4.201 C 8.557 3.317 9.054 2.517 9.858 1.938 C 10.662 1.358 11.773 1 12.999 1 Z"
+  );
+}
+
 .icon-gradient {
   stop-color: var(--text-main);
   transition: stop-color 0.2s ease-out;
@@ -27,15 +33,31 @@
   stop-color: var(--accent-dark);
 }
 
+.icon_error .icon-gradient__from,
+.icon_error .icon-gradient__to {
+  stop-color: var(--text-danger);
+}
+
 .inner-circle {
   transform-origin: center;
-  transition: scale 0.2s 0.1s var(--back-out), transform 0.2s ease-out;
+  transition: scale 0.2s 0.1s var(--back-out), translate 0.2s ease-out, r 0.2s ease-out, stroke 0.2s ease-out;
 }
 
 .icon_loading .inner-circle {
   scale: 0;
+  stroke: var(--accent-light);
   translate: 0 2px;
-  transition: scale 0.2s var(--back-in), translate 0.2s ease-out;
+  transition: scale 0.2s var(--back-in), translate 0.2s ease-out, r 0.2s ease-out, stroke 0.2s ease-out;
+}
+
+.icon_error .inner-circle {
+  r: 2;
+  translate: 0 13px;
+  stroke: var(--text-danger);
+}
+
+.icon_loading.icon_error-prev .inner-circle {
+  translate: 0 20px;
 }
 
 @keyframes loading {

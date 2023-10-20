@@ -1,6 +1,7 @@
 import React from "react";
 import { observer } from "mobx-react-lite";
 
+import { usePrevious } from "@/hooks";
 import { useStore } from "@/store/provider";
 import { cx } from "@/utils";
 
@@ -14,11 +15,14 @@ export const StateIcon: React.FC<Props> = observer(({ className }) => {
   const store = useStore();
   const { state } = store.locationInputStore.uiStore;
 
+  const prevState = usePrevious(state);
+
   return (
     <svg
       className={cx(className, {
         [style["icon_loading"]]: state === "loading",
         [style["icon_error"]]: state === "error",
+        [style["icon_error-prev"]]: prevState === "error",
       })}
       fill="none"
       viewBox="0 0 26 28"

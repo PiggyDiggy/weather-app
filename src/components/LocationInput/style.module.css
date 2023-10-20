@@ -2,9 +2,9 @@
   position: fixed;
   top: 28px;
   left: 28px;
+  right: 28px;
   z-index: 10;
-  width: 100%;
-  max-width: 350px;
+  max-width: 400px;
 }
 
 .content {
@@ -14,7 +14,6 @@
   overflow: hidden;
   box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
   color: var(--text-main);
-  overflow: hidden;
 }
 
 .glare {
@@ -59,7 +58,7 @@
   font-family: inherit;
   font-size: 24px;
   color: inherit;
-  padding: 18px 36px 18px 16px;
+  padding: 18px 42px 18px 16px;
   text-overflow: ellipsis;
   width: 100%;
   transition: border-radius 0.2s ease-out;
