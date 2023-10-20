@@ -2,6 +2,7 @@ import { makeAutoObservable } from "mobx";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 import { Location } from "@/entities/location";
+import { DataState } from "@/types";
 
 import { RootStore } from "..";
 
@@ -9,6 +10,7 @@ const initialState = {} as Location;
 
 export class LocationStore {
   private _location = initialState;
+  private _state: DataState = "loading";
   private router: AppRouterInstance;
   rootStore: RootStore;
 
@@ -34,5 +36,14 @@ export class LocationStore {
     }
 
     this._location = location;
+    this.state = "done";
+  }
+
+  get state() {
+    return this._state;
+  }
+
+  set state(newState: DataState) {
+    this._state = newState;
   }
 }

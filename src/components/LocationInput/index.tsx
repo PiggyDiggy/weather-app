@@ -16,7 +16,7 @@ export const LocationInput = observer(function LocationInput() {
   const { locationStore, locationInputStore } = useStore();
   const { focused, setFocused, inputValue, setInputValue } = locationInputStore.uiStore;
 
-  const loading = !locationStore.location.id;
+  const loading = locationStore.state === "loading";
 
   return (
     <div className={style.container}>
@@ -35,12 +35,7 @@ export const LocationInput = observer(function LocationInput() {
         <div className={style.backdrop} onClick={() => setFocused(false)}></div>
       </CSSTransition>
       <div className={cx(style.content, { [style["location-input_loading"]]: loading })}>
-        <CSSTransition
-          in={loading}
-          timeout={200}
-          classNames={{ exitActive: style["glare-exit-active"] }}
-          unmountOnExit
-        >
+        <CSSTransition in={loading} timeout={200} classNames={{ exitActive: style["glare-exit-active"] }} unmountOnExit>
           <div className={style.glare}></div>
         </CSSTransition>
         <div className={style["location-input-wrapper"]}>

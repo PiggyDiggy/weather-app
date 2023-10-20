@@ -1,8 +1,10 @@
+import { enableStaticRendering } from "mobx-react-lite";
 import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
-
 
 import { LocationStore } from "./location";
 import { LocationInputStore } from "./locationInput";
+
+enableStaticRendering(typeof window === "undefined");
 
 export class RootStore {
   locationStore: LocationStore;

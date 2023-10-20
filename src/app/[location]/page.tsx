@@ -1,4 +1,4 @@
-import { WeatherSlider } from "@/components/WeatherSlider";
+import { LocationPage } from "@/components/LocationPage";
 import { getAllWeather, getLocations } from "@/api/qweather";
 import { getMostRelevantLocation } from "@/entities/location";
 import { createSlides } from "@/utils";
@@ -19,17 +19,17 @@ export default async function Page(props: Props) {
   const locationParam = getLocationParam(props);
   const locations = await getLocations({ locationParam }).catch(() => null);
   if (!locations) {
-    return <div>Location not found</div>;
+    return <LocationPage />;
   }
 
   const mostRelevant = getMostRelevantLocation(locations);
   const { currentWeather, dailyForecast, hourlyForecast } = await getAllWeather({ locationId: mostRelevant.id });
 
   if (!currentWeather) {
-    return <div>Weather for current location is not available</div>;
+    return <LocationPage slides={[]} location={mostRelevant} />;
   }
 
   const slides = createSlides(currentWeather, hourlyForecast, dailyForecast, mostRelevant.utcOffset);
 
-  return <WeatherSlider slides={slides} location={mostRelevant} />;
+  return <LocationPage slides={slides} location={mostRelevant} />;
 }

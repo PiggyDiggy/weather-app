@@ -1,10 +1,7 @@
 "use client";
 
-import React, { useEffect } from "react";
-import { observer } from "mobx-react-lite";
+import React from "react";
 
-import { useStore } from "@/store/provider";
-import { Location } from "@/entities/location";
 import { Slide } from "@/utils";
 
 import { CustomSlider } from "../CustomSlider";
@@ -12,17 +9,9 @@ import { WeatherWidget } from "../WeatherWidget";
 
 import style from "./style.module.css";
 
-type Props = { slides: Slide[]; location: Location };
+type Props = { slides: Slide[] };
 
-export const WeatherSlider: React.FC<Props> = observer(({ slides, location }) => {
-  const store = useStore();
-
-  useEffect(() => {
-    if (!store.locationStore.location.id) {
-      store.locationInputStore.domainStore.changeLocation(location);
-    }
-  }, []);
-
+export const WeatherSlider: React.FC<Props> = ({ slides }) => {
   return (
     <CustomSlider length={slides.length}>
       <CustomSlider.Slides className={style["weather-slider__slides"]}>
@@ -37,4 +26,4 @@ export const WeatherSlider: React.FC<Props> = observer(({ slides, location }) =>
       </CustomSlider.Slides>
     </CustomSlider>
   );
-});
+};
