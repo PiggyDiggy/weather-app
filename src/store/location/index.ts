@@ -15,8 +15,7 @@ export class LocationStore {
   constructor(router: AppRouterInstance, rootStore: RootStore) {
     this.rootStore = rootStore;
     this.router = router;
-    makeAutoObservable<LocationStore, "_location" | "router" | "rootStore">(this, {
-      _location: false,
+    makeAutoObservable<LocationStore, "router" | "rootStore">(this, {
       router: false,
       rootStore: false,
     });

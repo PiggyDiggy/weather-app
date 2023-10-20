@@ -7,6 +7,29 @@
   max-width: 350px;
 }
 
+.content {
+  position: relative;
+  border: 2px solid var(--accent-light);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
+  color: var(--text-main);
+  overflow: hidden;
+}
+
+.glare {
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: linear-gradient(120deg, transparent 10%, var(--accent-light) 35%, transparent 35%);
+  animation: move-glare 1s ease-in-out infinite;
+}
+
+.glare-exit-active {
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+}
+
 .backdrop {
   position: fixed;
   inset: 0;
@@ -17,11 +40,18 @@
 
 .location-input-wrapper {
   position: relative;
-  color: var(--text-main);
-  border: 2px solid var(--accent-light);
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 2px 2px 16px rgba(0, 0, 0, 0.1);
+  mask-image: linear-gradient(to right, white, white 95%, transparent);
+  mask-size: 200%;
+  mask-repeat: no-repeat;
+  -webkit-mask-image: linear-gradient(to right, white, white 95%, transparent);
+  -webkit-mask-size: 200%;
+  -webkit-mask-repeat: no-repeat;
+  transition: -webkit-mask-position 0.4s ease-in, mask-position 0.4s ease-in;
+}
+
+.location-input_loading .location-input-wrapper {
+  mask-position: 200%;
+  -webkit-mask-position: 200%;
 }
 
 .location-input {
@@ -46,6 +76,12 @@
   top: 22px;
   height: 24px;
   pointer-events: none;
+  transition: scale 0.2s var(--back-out), opacity 0.2s var(--back-out);
+}
+
+.location-input_loading .location-icon {
+  scale: 0;
+  opacity: 0;
 }
 
 .backdrop_enter {
@@ -64,4 +100,13 @@
 .backdrop_exit-active {
   opacity: 0;
   transition: opacity 0.2s ease-out;
+}
+
+@keyframes move-glare {
+  0% {
+    translate: -40%;
+  }
+  100% {
+    translate: 100%;
+  }
 }

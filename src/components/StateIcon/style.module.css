@@ -24,18 +24,18 @@
 }
 
 .icon_loading .icon-gradient__to {
-  stop-color: #29b2ff;
+  stop-color: var(--accent-dark);
 }
 
 .inner-circle {
   transform-origin: center;
-  transition: scale 0.2s 0.1s cubic-bezier(0.34, 1.56, 0.64, 1), transform 0.2s ease-out;
+  transition: scale 0.2s 0.1s var(--back-out), transform 0.2s ease-out;
 }
 
 .icon_loading .inner-circle {
   scale: 0;
   translate: 0 2px;
-  transition: scale 0.2s cubic-bezier(0.36, 0, 0.66, -0.56), translate 0.2s ease-out;
+  transition: scale 0.2s var(--back-in), translate 0.2s ease-out;
 }
 
 @keyframes loading {

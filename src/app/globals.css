@@ -7,6 +7,9 @@
 :root {
   --text-main: #555;
   --accent-light: #8ccfff;
+  --accent-dark: #29b2ff;
+  --back-out: cubic-bezier(0.34, 1.56, 0.64, 1);
+  --back-in: cubic-bezier(0.36, 0, 0.66, -0.56);
 }
 
 html,
