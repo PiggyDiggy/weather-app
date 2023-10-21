@@ -9,5 +9,9 @@ export async function GET(request: Request) {
   }
   const location = await getLocations({ locationParam: locationName });
 
+  if (!location) {
+    return Response.json({ error: "location was not found" });
+  }
+
   return Response.json(location);
 }

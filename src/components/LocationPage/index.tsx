@@ -24,10 +24,8 @@ export const LocationPage: React.FC<Props> = observer(function LocationPage(prop
       locationStore.state = "error";
       return;
     }
-
-    if (!locationStore.location.id) {
-      locationInputStore.domainStore.changeLocation(props.location);
-    }
+    
+    locationInputStore.domainStore.changeLocation(props.location);
   }, []);
 
   if (!props.location) {
