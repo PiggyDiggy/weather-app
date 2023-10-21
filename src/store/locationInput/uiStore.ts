@@ -37,8 +37,10 @@ export class UIStore {
     if (this.inputValue === newValue) return;
 
     this.inputValue = newValue;
-    if (newValue.length > 1) {
-      this.debouncedLoadOptions(newValue);
+
+    const [locationName, country] = newValue.split(",").map((part) => part.trim());
+    if (locationName.length > 1) {
+      this.debouncedLoadOptions(locationName, country);
     }
   }
 }

@@ -1,4 +1,4 @@
-import { Location } from "@/entities/location";
+import { Location, sortLocationsByCountry } from "@/entities/location";
 
 import { method } from ".";
 
@@ -11,9 +11,11 @@ function getURL(path: string) {
 export function searchLocationsByName({
   locationName,
   fetchOptions,
+  country,
 }: {
   locationName: string;
   fetchOptions?: RequestInit;
+  country?: string;
 }) {
   return method<{ error: string } | Location[], Location[]>({
     path: getURL("location"),
@@ -24,7 +26,7 @@ export function searchLocationsByName({
         throw new Error(response.error);
       }
 
-      return response;
+      return country ? sortLocationsByCountry(response, country) : response;
     },
   });
 }

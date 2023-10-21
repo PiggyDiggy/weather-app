@@ -52,3 +52,12 @@ export const getMostRelevantLocation = (locations: Location[]) => {
 export const sortLocationsByRank = (locations: Location[]) => {
   return [...locations].sort((a, b) => a.rank - b.rank);
 };
+
+export const sortLocationsByCountry = (locations: Location[], country: string) => {
+  return [...locations].sort((a, b) => {
+    if (a.country === country && b.country !== country) return -1;
+    if (a.country !== country && b.country === country) return 1;
+
+    return 0;
+  });
+}

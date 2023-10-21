@@ -27,25 +27,21 @@ export class DomainStore {
   private flow: CancellablePromise<void> | null = null;
   private abortController: AbortController | null = null;
 
-  loadOptions(suggest: string) {
+  loadOptions(suggest: string, country?: string) {
     this.flow?.cancel();
     this.abortController?.abort();
 
     this.abortController = new AbortController();
-    this.flow = flowResult(this.fetchOptions(suggest));
+    this.flow = flowResult(this.fetchOptions(suggest, country));
     this.flow.catch(() => {});
   }
 
-  private *fetchOptions(suggest: string): Generator<Promise<Location[]>, void, Location[]> {
-    const locationName = suggest
-      .split(", ")
-      .map((part) => part.trim())
-      .join(",");
-
+  private *fetchOptions(locationName: string, country?: string): Generator<Promise<Location[]>, void, Location[]> {
     this.parentStore.uiStore.setState("loading");
     try {
       const response = yield searchLocationsByName({
         locationName,
+        country,
         fetchOptions: { signal: this.abortController?.signal },
       });
       this.setOptions(response);
