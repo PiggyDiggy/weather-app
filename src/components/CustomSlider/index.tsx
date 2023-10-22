@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useContext, useState, useCallback, useRef, useEffect } from "react";
 
 import type { Compound, FC } from "@/types";
@@ -71,7 +73,8 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   }, [currentSlide, length]);
 
   useEffect(() => {
-    if (!slidesRef.current) return;
+    const slides = slidesRef.current;
+    if (!slides) return;
 
     const handleWheel = (e: WheelEvent) => {
       e.preventDefault();
@@ -90,10 +93,10 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
       prevDeltaX.current = e.deltaX;
     };
 
-    slidesRef.current.addEventListener("wheel", handleWheel, { passive: false });
+    slides.addEventListener("wheel", handleWheel, { passive: false });
 
     return () => {
-      slidesRef.current?.removeEventListener("wheel", handleWheel);
+      slides.removeEventListener("wheel", handleWheel);
     };
   }, [goToNextSlide, goToPrevSlide]);
 

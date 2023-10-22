@@ -17,7 +17,7 @@ export const WeatherWidget: React.FC<Props> = ({ weather, isActive }) => {
 
   return (
     <div className={cx(style.widget, { [style.widget_active]: isActive })}>
-      <h2 className={style["temp-main"]}>{current?.temp || daily.tempMax}&deg; </h2>
+      <h2 className={style["temp-main"]}>{current?.temp ?? daily.tempMax}&deg; </h2>
       <div className={style.separator} />
       <ul className={style["day-info"]}>
         <li className={style["day-info__date"]}>

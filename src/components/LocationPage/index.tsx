@@ -5,7 +5,7 @@ import { observer } from "mobx-react-lite";
 
 import { Location } from "@/entities/location";
 import { useStore } from "@/store/provider";
-import { Slide } from "@/utils";
+import { Slide, formatLocationName } from "@/utils";
 
 import { WeatherSlider } from "../WeatherSlider";
 
@@ -24,9 +24,10 @@ export const LocationPage: React.FC<Props> = observer(function LocationPage(prop
       locationStore.state = "error";
       return;
     }
-    
-    locationInputStore.domainStore.changeLocation(props.location);
-  }, []);
+
+    locationStore.location = props.location;
+    locationInputStore.uiStore.setInputValue(formatLocationName(props.location, false));
+  }, [locationInputStore.uiStore, locationStore, props.location]);
 
   if (!props.location) {
     return <div>Location not found</div>;

@@ -12,6 +12,6 @@
 }
 
 .widget-skeleton:not(.widget-skeleton_first) {
-  translate: 0 0 -100px;
+  scale: 0.925;
   opacity: 0.4;
 }

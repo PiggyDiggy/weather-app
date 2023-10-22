@@ -7,18 +7,18 @@
   box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.1), 0px 2px 40px 0px rgba(0, 0, 0, 0.1);
   border-radius: 24px;
   color: var(--text-main);
-  transition: opacity 0.25s ease-out, translate 0.25s ease-out;
+  transition: opacity 0.25s ease-out, scale 0.25s ease-out;
 }
 
 .widget:not(.widget_active) {
   opacity: 0.4;
-  translate: 0 0 -100px;
+  scale: 0.925;
   cursor: pointer;
 }
 
 .widget:not(.widget_active):hover {
   opacity: 0.55;
-  translate: 0 0 -80px;
+  scale: 0.95;
 }
 
 .temp-main {

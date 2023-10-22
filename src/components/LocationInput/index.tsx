@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 
 import { useStore } from "@/store/provider";
@@ -16,8 +16,15 @@ import style from "./style.module.css";
 export const LocationInput = observer(function LocationInput() {
   const { locationStore, locationInputStore } = useStore();
   const { focused, setFocused, inputValue, setInputValue } = locationInputStore.uiStore;
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const loading = locationStore.state === "loading";
+
+  useEffect(() => {
+    if (!focused) {
+      inputRef.current?.blur();
+    }
+  }, [focused]);
 
   return (
     <div className={style.container}>
@@ -33,6 +40,7 @@ export const LocationInput = observer(function LocationInput() {
             onFocus={() => setFocused(true)}
             autoComplete="off"
             disabled={loading}
+            ref={inputRef}
           />
           <LocationSelect />
         </div>

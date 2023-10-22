@@ -4,7 +4,6 @@
 }
 
 .weather-slider__slide {
-  perspective: 100vw;
   max-width: 1200px;
   flex-shrink: 0;
 }
