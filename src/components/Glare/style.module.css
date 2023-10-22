@@ -1,0 +1,22 @@
+.glare {
+  --gradient-color: var(--accent-light);
+  position: absolute;
+  inset: 0;
+  opacity: 0.3;
+  background-image: linear-gradient(120deg, transparent 10%, var(--gradient-color) 35%, transparent 35%);
+  animation: move-glare 1s ease-in-out infinite;
+}
+
+.glare-exit-active {
+  transition: opacity 0.2s ease-out;
+  opacity: 0;
+}
+
+@keyframes move-glare {
+  0% {
+    translate: -40%;
+  }
+  100% {
+    translate: 90%;
+  }
+}

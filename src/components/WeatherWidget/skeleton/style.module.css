@@ -1,0 +1,17 @@
+.widget-skeleton {
+  position: relative;
+  overflow: hidden;
+  height: 170px;
+  background-color: rgba(255, 255, 255, 0.3);
+  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.1), 0px 2px 40px 0px rgba(0, 0, 0, 0.1);
+  border-radius: 24px;
+}
+
+.widget-skeleton__glare {
+  --gradient-color: rgba(255, 255, 255, 0.7);
+}
+
+.widget-skeleton:not(.widget-skeleton_first) {
+  translate: 0 0 -100px;
+  opacity: 0.4;
+}

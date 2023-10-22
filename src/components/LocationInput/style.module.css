@@ -16,27 +16,6 @@
   color: var(--text-main);
 }
 
-.glare {
-  position: absolute;
-  inset: 0;
-  opacity: 0.3;
-  background-image: linear-gradient(120deg, transparent 10%, var(--accent-light) 35%, transparent 35%);
-  animation: move-glare 1s ease-in-out infinite;
-}
-
-.glare-exit-active {
-  transition: opacity 0.2s ease-out;
-  opacity: 0;
-}
-
-.backdrop {
-  position: fixed;
-  inset: 0;
-  background-color: rgba(0, 0, 0, 0.2);
-  z-index: -1;
-  cursor: pointer;
-}
-
 .location-input-wrapper {
   position: relative;
   mask-image: linear-gradient(to right, white, white 95%, transparent);
@@ -81,31 +60,4 @@
 .location-input_loading .location-icon {
   scale: 0;
   opacity: 0;
-}
-
-.backdrop_enter {
-  opacity: 0;
-}
-
-.backdrop_enter-active {
-  opacity: 1;
-  transition: opacity 0.2s ease-out;
-}
-
-.backdrop_exit {
-  opacity: 1;
-}
-
-.backdrop_exit-active {
-  opacity: 0;
-  transition: opacity 0.2s ease-out;
-}
-
-@keyframes move-glare {
-  0% {
-    translate: -40%;
-  }
-  100% {
-    translate: 100%;
-  }
 }

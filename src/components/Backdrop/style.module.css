@@ -1,0 +1,25 @@
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(0, 0, 0, 0.2);
+  z-index: -1;
+  cursor: pointer;
+}
+
+.backdrop_enter {
+  opacity: 0;
+}
+
+.backdrop_enter-active {
+  opacity: 1;
+  transition: opacity 0.2s ease-out;
+}
+
+.backdrop_exit {
+  opacity: 1;
+}
+
+.backdrop_exit-active {
+  opacity: 0;
+  transition: opacity 0.2s ease-out;
+}
