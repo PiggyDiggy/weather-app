@@ -1,3 +1,7 @@
+import { Suspense } from "react";
+
+import { WeatherSliderSkeleton } from "@/components/WeatherSlider/skeleton";
+
 import style from "./page.module.css";
 
 type Props = {
@@ -7,7 +11,9 @@ type Props = {
 export default async function Layout({ children }: Props) {
   return (
     <div className={style.page}>
-      <section className={style.section}>{children}</section>
+      <section className={style.section}>
+        <Suspense fallback={<WeatherSliderSkeleton />}>{children}</Suspense>
+      </section>
     </div>
   );
 }
