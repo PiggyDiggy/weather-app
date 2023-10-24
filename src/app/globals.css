@@ -11,12 +11,15 @@
   --text-danger: #ff6a6a;
   --back-out: cubic-bezier(0.34, 1.56, 0.64, 1);
   --back-in: cubic-bezier(0.36, 0, 0.66, -0.56);
+  font-size: 62.5%;
 }
 
 html,
 body {
   height: 100%;
   margin: 0;
+  -webkit-tap-highlight-color: transparent;
+  font-size: 1.6rem;
 }
 
 main {

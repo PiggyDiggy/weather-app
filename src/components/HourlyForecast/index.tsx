@@ -13,12 +13,13 @@ import style from "./style.module.css";
 type Props = {
   forecast: HourlyWeather[];
   isActiveSlide: boolean;
+  className?: string;
 };
 
 const SCROLL_MIN = 40;
 const SCROLL_PRESERVED_DISTANCE = 100;
 
-export const HourlyForecast: React.FC<Props> = ({ forecast, isActiveSlide }) => {
+export const HourlyForecast: React.FC<Props> = ({ forecast, isActiveSlide, className }) => {
   const [scrollLeft, setScrollLeft] = useState(0);
   const [showScrollButton, setShowScrollButton] = useState(false);
 
@@ -61,7 +62,7 @@ export const HourlyForecast: React.FC<Props> = ({ forecast, isActiveSlide }) => 
   };
 
   return (
-    <div className={style["hourly-forecast"]}>
+    <div className={cx(style["hourly-forecast"], className)}>
       <CSSTransition
         classNames={transitionClassNames}
         nodeRef={backButtonRef}

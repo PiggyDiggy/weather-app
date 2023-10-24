@@ -1,6 +1,5 @@
 .hourly-forecast {
   overflow-x: hidden;
-  margin-inline: -16px;
   position: relative;
 }
 
@@ -10,7 +9,6 @@
   display: flex;
   gap: 8px;
   overflow-x: hidden;
-  margin-inline: 16px;
 
   mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
   -webkit-mask-image: linear-gradient(to right, transparent, white 10%, white 90%, transparent);
@@ -76,7 +74,7 @@
 }
 
 .hourly-forecast__button_prev {
-  left: 16px;
+  left: 0;
   rotate: 0.5turn;
 }
 
@@ -85,7 +83,7 @@
 }
 
 .hourly-forecast__button_next {
-  right: 16px;
+  right: 0;
 }
 
 .scroll-button-enter {

@@ -1,5 +1,6 @@
 .widget {
-  display: flex;
+  display: grid;
+  grid-template-columns: max-content 34px max-content 34px max-content 34px auto;
   align-items: center;
   min-height: 170px;
   background-color: rgba(255, 255, 255, 0.5);
@@ -22,7 +23,7 @@
 }
 
 .temp-main {
-  font-size: 64px;
+  font-size: 3.5em;
   font-weight: 300;
   margin-block: auto;
   margin-left: 30px;
@@ -47,10 +48,14 @@
 .day-info__date {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-size: 18px;
+  gap: calc(1em / 1.8);
+  font-size: 1.125em;
   font-weight: 600;
   margin-bottom: 12px;
+}
+
+.calendar-icon {
+  height: calc(4em / 3);
 }
 
 .day-info__forecast {
@@ -66,18 +71,18 @@
 
 .day-forecast__text {
   display: inline-flex;
-  gap: 10px;
+  gap: calc(1em / 1.6);
   align-items: center;
 }
 
 .day-forecast__icon {
   width: 24px;
-  font-size: 24px;
+  font-size: 1.5em;
 }
 
 .day-forecast__temp {
   font-weight: 300;
-  font-size: 18px;
+  font-size: 1.125em;
 }
 
 .astronomy {
@@ -88,10 +93,114 @@
   flex-shrink: 0;
 }
 
-.astronomy_item {
+.astronomy__item {
   display: flex;
   flex-direction: column;
   gap: 6px;
   align-items: center;
   font-weight: 300;
+}
+
+.astronomy__item-icon {
+  height: 1.25em;
+}
+
+.feels-like {
+  display: none;
+}
+
+@media screen and (max-width: 900px) {
+  .widget:not(.widget_active) {
+    scale: 0.95;
+  }
+
+  .temp-main {
+    margin-left: 20px;
+  }
+
+  .day-info {
+    margin: 0;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .widget {
+    font-size: 1.4rem;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .widget {
+    grid-template-columns: auto 1fr auto;
+    grid-template-areas:
+      "temp date astronomy"
+      "daily daily daily";
+    column-gap: 10px;
+    row-gap: 4px;
+    padding: 8px 18px;
+  }
+
+  .widget_with-hourly-forecast {
+    grid-template-areas:
+      "temp date astronomy"
+      "daily daily daily"
+      "hourly hourly hourly";
+  }
+
+  .astronomy {
+    grid-area: astronomy;
+  }
+
+  .temp-main {
+    margin-left: 0;
+    font-size: 3em;
+    grid-area: temp;
+  }
+
+  .day-info__date {
+    grid-area: date;
+  }
+
+  .day-info__forecast {
+    grid-area: daily;
+  }
+
+  .hourly-forecast {
+    grid-area: hourly;
+    justify-self: center;
+    max-width: 100%;
+    margin-block: 8px;
+  }
+
+  .day-info {
+    display: contents;
+  }
+
+  .separator,
+  .calendar-icon {
+    display: none;
+  }
+
+  .day-info__date {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+    margin: 0;
+  }
+
+  .widget_with-hourly-forecast .day-info__forecast {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .feels-like {
+    display: block;
+    font-weight: 300;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .widget {
+    font-size: 1.3rem;
+  }
 }
