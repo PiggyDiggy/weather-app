@@ -65,18 +65,17 @@
 
 .day-forecast__row {
   display: flex;
-  gap: 6px;
+  gap: calc(1em * 0.375);
   align-items: center;
 }
 
 .day-forecast__text {
   display: inline-flex;
-  gap: calc(1em / 1.6);
+  gap: calc(1em * 0.625);
   align-items: center;
 }
 
 .day-forecast__icon {
-  width: 24px;
   font-size: 1.5em;
 }
 
@@ -191,6 +190,8 @@
   .widget_with-hourly-forecast .day-info__forecast {
     flex-direction: row;
     justify-content: space-between;
+    flex-wrap: wrap;
+    column-gap: 6px;
   }
 
   .feels-like {
@@ -202,5 +203,6 @@
 @media screen and (max-width: 400px) {
   .widget {
     font-size: 1.3rem;
+    padding-inline: 12px;
   }
 }

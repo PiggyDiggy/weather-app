@@ -3,9 +3,7 @@ import { Location, sortLocationsByCountry } from "@/entities/location";
 import { method } from ".";
 
 function getURL(path: string) {
-  const url = new URL(window.location.host);
-
-  return `${url.host}/api/${path}`;
+  return `${window.location.origin}/api/${path}`;
 }
 
 export function searchLocationsByName({
