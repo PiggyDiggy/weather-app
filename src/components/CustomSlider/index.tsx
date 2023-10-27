@@ -3,6 +3,7 @@
 import React, { useContext, useState, useCallback, useRef, useEffect } from "react";
 
 import type { Compound, FC } from "@/types";
+import { useCustomScroll } from "@/hooks/useCustomScroll";
 import { cx } from "@/utils";
 
 import style from "./style.module.css";
@@ -29,7 +30,6 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isScrolling, setIsScrolling] = useState(false);
   const slidesRef = useRef<HTMLUListElement>(null);
-  const prevDeltaX = useRef(0);
 
   const goToSlide = useCallback(
     (slide: number) => {
@@ -37,6 +37,10 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
 
       setCurrentSlide(slide);
       setIsScrolling(true);
+
+      setTimeout(() => {
+        setIsScrolling(false);
+      }, SCROLL_TIME / 2);
     },
     [isScrolling, currentSlide]
   );
@@ -73,44 +77,6 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
   }, [currentSlide, length]);
 
   useEffect(() => {
-    const slides = slidesRef.current;
-    if (!slides) return;
-
-    const handleWheel = (e: WheelEvent) => {
-      e.preventDefault();
-
-      if (!Number.isInteger(e.deltaY)) {
-        return e.deltaY > 0 ? goToNextSlide() : goToPrevSlide();
-      }
-
-      if (Math.abs(e.deltaX) > Math.abs(prevDeltaX.current)) {
-        if (e.deltaX > 0) {
-          goToNextSlide();
-        } else if (e.deltaX < 0) {
-          goToPrevSlide();
-        }
-      }
-      prevDeltaX.current = e.deltaX;
-    };
-
-    slides.addEventListener("wheel", handleWheel, { passive: false });
-
-    return () => {
-      slides.removeEventListener("wheel", handleWheel);
-    };
-  }, [goToNextSlide, goToPrevSlide]);
-
-  useEffect(() => {
-    const timeoutId = setTimeout(() => {
-      setIsScrolling(false);
-    }, SCROLL_TIME / 2);
-
-    return () => {
-      clearTimeout(timeoutId);
-    };
-  }, [currentSlide]);
-
-  useEffect(() => {
     if (!slidesRef.current) return;
 
     const observer = new ResizeObserver(() => {
@@ -122,6 +88,8 @@ export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ childre
       observer.disconnect();
     };
   }, [scrollToCurrentSlide]);
+  
+  useCustomScroll(slidesRef, goToPrevSlide, goToNextSlide);
 
   return (
     <SliderContext.Provider value={{ currentSlide, goToSlide }}>
