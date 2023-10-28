@@ -31,7 +31,7 @@ export const useCustomScroll = (nodeRef: React.RefObject<HTMLElement>, goToPrevi
       element.removeEventListener("custom:swipe", handleSwipe as EventListener);
       touchGestures.removeListeners();
     };
-  }, [nodeRef.current]);
+  }, []);
 
   useEffect(() => {
     const element = nodeRef.current;
@@ -60,5 +60,5 @@ export const useCustomScroll = (nodeRef: React.RefObject<HTMLElement>, goToPrevi
     return () => {
       element.removeEventListener("wheel", handleWheel);
     };
-  }, [nodeRef.current]);
+  }, []);
 };
