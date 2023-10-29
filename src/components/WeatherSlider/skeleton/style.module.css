@@ -2,12 +2,25 @@
   display: flex;
   width: 100%;
   list-style: none;
-  padding: 0;
   margin: 0;
+  padding: 32px 64px;
 }
 
 .weather-slider-skeleton__slide {
   width: 100%;
   flex: 1 0 100%;
   max-width: 1200px;
+}
+
+
+@media screen and (max-width: 900px) {
+  .weather-slider-skeleton {
+    padding-inline: 32px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .weather-slider-skeleton {
+    padding-inline: 20px;
+  }
 }

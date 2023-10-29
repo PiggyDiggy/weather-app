@@ -1,17 +1,14 @@
 "use client";
 
-import React, { useContext, useState, useCallback, useRef, useEffect } from "react";
+import React, { useContext, useState, useCallback, useRef } from "react";
 
 import type { Compound, FC } from "@/types";
-import { useCustomScroll } from "@/hooks/useCustomScroll";
+import { useScrollSync } from "@/hooks/useScrollSync";
 import { cx } from "@/utils";
 
 import style from "./style.module.css";
 
-const SliderContext = React.createContext({
-  currentSlide: 0,
-  goToSlide: (_: number) => {},
-});
+const CurrentSlideContext = React.createContext(0);
 const SliderRefContext = React.createContext<React.RefObject<HTMLUListElement>>({ current: null });
 
 type SliderComposition = {
@@ -20,83 +17,30 @@ type SliderComposition = {
 };
 
 type SliderProps = {
-  length: number;
   className?: string;
 };
 
-export const SCROLL_TIME = 600;
-
-export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ children, length, className }) => {
+export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ children, className }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const [isScrolling, setIsScrolling] = useState(false);
   const slidesRef = useRef<HTMLUListElement>(null);
 
   const goToSlide = useCallback(
     (slide: number) => {
-      if (isScrolling || slide === currentSlide) return;
+      if (slide === currentSlide) return;
 
       setCurrentSlide(slide);
-      setIsScrolling(true);
-
-      setTimeout(() => {
-        setIsScrolling(false);
-      }, SCROLL_TIME / 2);
     },
-    [isScrolling, currentSlide]
+    [currentSlide]
   );
 
-  const goToPrevSlide = useCallback(() => {
-    if (currentSlide === 0) return;
-
-    goToSlide(currentSlide - 1);
-  }, [currentSlide, goToSlide]);
-
-  const goToNextSlide = useCallback(() => {
-    if (currentSlide === length - 1) return;
-
-    goToSlide(currentSlide + 1);
-  }, [currentSlide, length, goToSlide]);
-
-  const scrollToCurrentSlide = useCallback(() => {
-    const parent = slidesRef.current;
-    if (!parent) return;
-
-    const parentRect = parent.getBoundingClientRect();
-    const slideRect = parent.children[currentSlide].getBoundingClientRect();
-
-    const deltaX = slideRect.left - parentRect.left;
-
-    let offset = parentRect.width / 2 - slideRect.width / 2;
-    if (currentSlide === 0) {
-      offset = 0;
-    } else if (currentSlide === length - 1) {
-      offset = parentRect.width - slideRect.width;
-    }
-
-    parent.style.translate = `${-deltaX + offset}px`;
-  }, [currentSlide, length]);
-
-  useEffect(() => {
-    if (!slidesRef.current) return;
-
-    const observer = new ResizeObserver(() => {
-      scrollToCurrentSlide();
-    });
-    observer.observe(slidesRef.current);
-
-    return () => {
-      observer.disconnect();
-    };
-  }, [scrollToCurrentSlide]);
-  
-  useCustomScroll(slidesRef, goToPrevSlide, goToNextSlide);
+  useScrollSync(slidesRef, goToSlide);
 
   return (
-    <SliderContext.Provider value={{ currentSlide, goToSlide }}>
+    <CurrentSlideContext.Provider value={currentSlide}>
       <SliderRefContext.Provider value={slidesRef}>
         <div className={cx(className, style.container)}>{children}</div>
       </SliderRefContext.Provider>
-    </SliderContext.Provider>
+    </CurrentSlideContext.Provider>
   );
 };
 
@@ -121,10 +65,17 @@ type SlideProps = {
 };
 
 CustomSlider.Slide = function Slide({ renderSlide, index, classname }) {
-  const { currentSlide, goToSlide } = useContext(SliderContext);
+  const currentSlide = useContext(CurrentSlideContext);
+  const ref = useContext(SliderRefContext);
+
+  const scrollToCurrent = () => {
+    if (!ref.current) return;
+
+    ref.current.children[index].scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
-    <li onClick={() => goToSlide(index)} className={cx(classname, style.slide)}>
+    <li onClick={scrollToCurrent} className={cx(classname, style.slide)}>
       {renderSlide({ isActive: index === currentSlide })}
     </li>
   );

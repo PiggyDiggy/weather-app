@@ -13,7 +13,7 @@ type Props = { slides: Slide[] };
 
 export const WeatherSlider: React.FC<Props> = ({ slides }) => {
   return (
-    <CustomSlider length={slides.length}>
+    <CustomSlider>
       <CustomSlider.Slides className={style["weather-slider__slides"]}>
         {slides.map((weather, i) => (
           <CustomSlider.Slide

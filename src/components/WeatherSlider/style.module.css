@@ -1,9 +1,22 @@
 .weather-slider__slides {
   gap: 0;
+  padding: 32px 64px;
   overscroll-behavior-x: none;
 }
 
 .weather-slider__slide {
   max-width: 1200px;
   flex-shrink: 0;
+}
+
+@media screen and (max-width: 900px) {
+  .weather-slider__slides {
+    padding-inline: 32px;
+  }
+}
+
+@media screen and (max-width: 640px) {
+  .weather-slider__slides {
+    padding-inline: 20px;
+  }
 }

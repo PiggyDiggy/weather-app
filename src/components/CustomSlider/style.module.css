@@ -17,32 +17,19 @@
   max-width: 100%;
   align-items: center;
   list-style: none;
-  padding: 0;
   margin: 0;
-  transition: translate 0.6s ease;
-  will-change: translate;
+  overflow-x: overlay;
+  scroll-snap-type: x mandatory;
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.slides::-webkit-scrollbar {
+  display: none;
 }
 
 .slide {
   width: 100%;
-}
-
-.navigation {
-  display: flex;
-  gap: 16px;
-  list-style: none;
-  padding: 0;
-}
-
-.navigation__element {
-  background-color: #eee;
-  cursor: pointer;
-  padding: 8px;
-  border-radius: 100vmax;
-  height: 16px;
-  width: 16px;
-}
-
-.navigation__element_active {
-  background-color: #ccc;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
 }
