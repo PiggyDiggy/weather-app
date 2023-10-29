@@ -36,3 +36,9 @@
 .location-options_transition {
   transition: height 0.2s ease-out;
 }
+
+@media screen and (max-width: 400px) {
+  .location-option {
+    padding: 6px 12px;
+  }
+}

@@ -17,7 +17,7 @@ export const WeatherSlider: React.FC<Props> = ({ slides }) => {
       <CustomSlider.Slides className={style["weather-slider__slides"]}>
         {slides.map((weather, i) => (
           <CustomSlider.Slide
-            key={i}
+            key={weather.daily.fxDate.getDate()}
             index={i}
             classname={style["weather-slider__slide"]}
             renderSlide={({ isActive }) => <WeatherWidget isActive={isActive} weather={weather} />}
