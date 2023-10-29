@@ -1,5 +1,6 @@
+import { SCROLL_TIME } from "@/components/CustomSlider";
+
 const DISTANCE = 25;
-const TIME_TO_SWIPE = 200;
 
 export type SwipeDirection = "left" | "right" | "down" | "up";
 
@@ -92,13 +93,20 @@ export class TouchGestures {
 
   private compareAndDispatch(timestamp: number, dist: number, forth: SwipeDirection, back: SwipeDirection) {
     const deltaTime = timestamp - this.startTimeStamp;
-    if (deltaTime > 500 || Math.abs(dist) < DISTANCE) {
+    if (deltaTime > SCROLL_TIME || Math.abs(dist) < DISTANCE || (this.isOverscrolling(dist) && !this.isAnimating)) {
       this.target.style.transitionDuration = "";
       this.target.style.translate = `${this.initialTranslateX}px`;
       return;
     }
 
-    this.target.style.transitionDuration = `${deltaTime}ms`;
+    this.target.style.transitionDuration = ``;
     this.dispatchEvent(dist > 0 ? forth : back);
+  }
+
+  private isOverscrolling(dist: number) {
+    return (
+      this.initialTranslateX + dist > 0 ||
+      (this.initialTranslateX + dist) * -1 > this.target.scrollWidth - this.target.offsetWidth
+    );
   }
 }

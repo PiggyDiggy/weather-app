@@ -24,7 +24,7 @@ type SliderProps = {
   className?: string;
 };
 
-const SCROLL_TIME = 700;
+export const SCROLL_TIME = 600;
 
 export const CustomSlider: Compound<SliderComposition, SliderProps> = ({ children, length, className }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
