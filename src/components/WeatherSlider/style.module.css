@@ -1,3 +1,10 @@
+.weather-slider {
+  min-height: 275px;
+  background-image: linear-gradient(180deg, #badcdd 0%, var(--accent-dark) 100%);
+  overflow-x: hidden;
+  justify-content: center;
+}
+
 .weather-slider__slides {
   gap: 0;
   padding: 32px 64px;
@@ -10,6 +17,10 @@
 }
 
 @media screen and (max-width: 900px) {
+  .weather-slider {
+    min-height: 235px;
+  }
+
   .weather-slider__slides {
     padding-inline: 32px;
   }

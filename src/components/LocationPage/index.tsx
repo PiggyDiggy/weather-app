@@ -8,6 +8,7 @@ import { useStore } from "@/store/provider";
 import { Slide, formatLocationName } from "@/utils";
 
 import { WeatherSlider } from "../WeatherSlider";
+import { Clock } from "../Clock";
 
 type Props =
   | {
@@ -37,5 +38,10 @@ export const LocationPage: React.FC<Props> = observer(function LocationPage(prop
     return <div>Weather for current location is not available</div>;
   }
 
-  return <WeatherSlider slides={props.slides} />;
+  return (
+    <>
+      <Clock location={props.location} />
+      <WeatherSlider slides={props.slides} />
+    </>
+  );
 });

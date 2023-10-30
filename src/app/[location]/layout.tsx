@@ -11,7 +11,7 @@ type Props = {
 export default async function Layout({ children }: Props) {
   return (
     <div className={style.page}>
-      <section className={style.section}>
+      <section>
         <Suspense fallback={<WeatherSliderSkeleton />}>{children}</Suspense>
       </section>
     </div>

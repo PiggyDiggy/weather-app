@@ -4,17 +4,3 @@
   flex-direction: column;
   justify-content: flex-end;
 }
-
-.section {
-  min-height: 275px;
-  background-image: linear-gradient(180deg, #badcdd 0%, var(--accent-dark) 100%);
-  overflow-x: hidden;
-  display: flex;
-  align-items: center;
-}
-
-@media screen and (max-width: 900px) {
-  .section {
-    min-height: 235px;
-  }
-}
