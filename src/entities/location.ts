@@ -54,10 +54,18 @@ export const sortLocationsByRank = (locations: Location[]) => {
 };
 
 export const sortLocationsByCountry = (locations: Location[], country: string) => {
+  const isProvidedCountry = isStringEqualToCountry(country);
+
   return [...locations].sort((a, b) => {
-    if (a.country === country && b.country !== country) return -1;
-    if (a.country !== country && b.country === country) return 1;
+    if (isProvidedCountry(a) && !isProvidedCountry(b)) return -1;
+    if (!isProvidedCountry(a) && isProvidedCountry(b)) return 1;
 
     return 0;
   });
-}
+};
+
+const areStringsEqual = (a: string, b: string) => {
+  return a.toLowerCase() === b.toLowerCase();
+};
+
+const isStringEqualToCountry = (country: string) => (loc: Location) => areStringsEqual(country, loc.country);

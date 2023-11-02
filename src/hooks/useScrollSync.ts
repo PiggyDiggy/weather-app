@@ -34,5 +34,5 @@ export const useScrollSync = (nodeRef: React.RefObject<HTMLElement>, goToSlide: 
     return () => {
       slider.removeEventListener("scroll", handleScroll);
     };
-  }, []);
+  }, [nodeRef]);
 };

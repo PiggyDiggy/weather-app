@@ -22,6 +22,10 @@
 }
 
 @media screen and (max-width: 900px) {
+  .weather-slider-skeleton-wrapper {
+    min-height: 235px;
+  }
+
   .weather-slider-skeleton {
     padding-inline: 32px;
   }

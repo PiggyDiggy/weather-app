@@ -51,9 +51,4 @@ export class DomainStore {
       this.parentStore.uiStore.setState("error");
     }
   }
-
-  changeLocation(newLocation: Location) {
-    this.parentStore.rootStore.locationStore.location = newLocation;
-    this.parentStore.uiStore.setFocused(false);
-  }
 }

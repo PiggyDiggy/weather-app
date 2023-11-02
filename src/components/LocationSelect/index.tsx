@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { observer } from "mobx-react-lite";
 import { CSSTransition } from "react-transition-group";
 
@@ -9,10 +9,16 @@ import style from "./style.module.css";
 
 export const LocationSelect = observer(function LocationSelect() {
   const { locationInputStore } = useStore();
-  const { options, changeLocation } = locationInputStore.domainStore;
-  const { focused } = locationInputStore.uiStore;
-
-  const [selectedId, setSelectedId] = useState(0);
+  const { options } = locationInputStore.domainStore;
+  const {
+    focused,
+    selectedId,
+    setSelectedId,
+    changeLocation,
+    changeLocationToSelected,
+    selectNextOption,
+    selectPreviousOption,
+  } = locationInputStore.uiStore;
 
   const listRef = useRef<HTMLUListElement>(null);
   const listHeight = useRef(0);
@@ -20,9 +26,11 @@ export const LocationSelect = observer(function LocationSelect() {
   useEffect(() => {
     const handleKeyDown = ({ key }: KeyboardEvent) => {
       if (key === "ArrowDown") {
-        setSelectedId((currentId) => (currentId < options.length - 1 ? currentId + 1 : 0));
+        selectNextOption();
       } else if (key === "ArrowUp") {
-        setSelectedId((currentId) => (currentId === 0 ? options.length - 1 : currentId - 1));
+        selectPreviousOption();
+      } else if (key === "Enter") {
+        changeLocationToSelected();
       }
     };
 
@@ -31,21 +39,7 @@ export const LocationSelect = observer(function LocationSelect() {
     return () => {
       document.removeEventListener("keydown", handleKeyDown);
     };
-  }, [options.length]);
-
-  useEffect(() => {
-    const handleKeyDown = ({ key }: KeyboardEvent) => {
-      if (key === "Enter" && options.length > 0) {
-        changeLocation(options[selectedId]);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-
-    return () => {
-      document.removeEventListener("keydown", handleKeyDown);
-    };
-  }, [options, selectedId, changeLocation]);
+  }, [selectNextOption, selectPreviousOption, changeLocationToSelected]);
 
   useEffect(() => {
     if (!listRef.current) return;

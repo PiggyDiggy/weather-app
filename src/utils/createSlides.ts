@@ -16,6 +16,8 @@ export const createSlides = (
     return acc;
   }, {} as Record<string, Slide>);
 
+  if (Object.keys(slides).length === 0) return [];
+
   for (const hourlyForecast of hourly) {
     const dateObj = hourlyForecast.fxTime;
     dateObj.setUTCMinutes(dateObj.getUTCMinutes() + utcOffset);

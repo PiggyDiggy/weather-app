@@ -3,6 +3,7 @@ import { AppRouterInstance } from "next/dist/shared/lib/app-router-context";
 
 import { Location } from "@/entities/location";
 import { DataState } from "@/types";
+import { buildURL } from "@/utils";
 
 import { RootStore } from "..";
 
@@ -11,7 +12,7 @@ const initialState = {} as Location;
 export class LocationStore {
   private _location = initialState;
   private _state: DataState = "loading";
-  private router: AppRouterInstance;
+  router?: AppRouterInstance;
   rootStore: RootStore;
 
   constructor(router: AppRouterInstance, rootStore: RootStore) {
@@ -28,10 +29,10 @@ export class LocationStore {
   }
 
   set location(location: Location) {
-    const urlString = `/${encodeURIComponent(location.name)}?id=${location.id}`;
+    const urlString = buildURL(location);
     if (!this._location.id) {
       this.router?.replace(urlString);
-    } else {
+    } else if (this._location.id !== location.id) {
       this.router?.push(urlString);
     }
 
